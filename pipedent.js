@@ -1,9 +1,14 @@
 (function() {
-  var branch_method, find_indentation, get_indented_block, get_tags, indent_lines, leaf_method, output;
+  var branch_method, enclose_tag, find_indentation, get_indented_block, get_tags, indent_lines, leaf_method, output;
   get_tags = function(full_tag) {
     var tag;
-    tag = full_tag.split()[0];
+    tag = full_tag.split(' ')[0];
     return ["<" + full_tag + ">", "</" + tag + ">"];
+  };
+  enclose_tag = function(tag, text) {
+    var end_tag, start_tag, _ref;
+    _ref = get_tags(tag), start_tag = _ref[0], end_tag = _ref[1];
+    return start_tag + text + end_tag;
   };
   branch_method = function(output, block, recurse) {
     var end_tag, line, prefix, start_tag, _ref, _ref2;
@@ -14,6 +19,30 @@
     return output.append(prefix + end_tag);
   };
   leaf_method = function(s) {
+    var m, raw_html, text_enclosing_tag, translation, translations, _i, _len;
+    raw_html = {
+      syntax: RegExp(/(\<.*)/),
+      convert: function(m) {
+        return m[1];
+      }
+    };
+    text_enclosing_tag = {
+      syntax: RegExp(/(.*?)\s*\| (.*)/),
+      convert: function(m) {
+        if (m[1] === '') {
+          return m[2];
+        }
+        return enclose_tag(m[1], m[2]);
+      }
+    };
+    translations = [raw_html, text_enclosing_tag];
+    for (_i = 0, _len = translations.length; _i < _len; _i++) {
+      translation = translations[_i];
+      m = translation.syntax.exec(s);
+      if (m) {
+        return translation.convert(m);
+      }
+    }
     return s;
   };
   get_indented_block = function(prefix_lines) {

@@ -1,6 +1,10 @@
 get_tags = (full_tag) ->
-  tag = full_tag.split()[0]
+  tag = full_tag.split(' ')[0]
   ["<#{full_tag}>", "</#{tag}>"]
+  
+enclose_tag = (tag, text) ->
+  [start_tag, end_tag] = get_tags(tag)
+  start_tag + text + end_tag
 
 branch_method = (output, block, recurse) ->
   [prefix, line] = block[0]
@@ -10,6 +14,22 @@ branch_method = (output, block, recurse) ->
   output.append(prefix + end_tag)
 
 leaf_method = (s) ->
+  raw_html =
+    syntax: RegExp /(\<.*)/
+    convert: (m) -> m[1]
+  text_enclosing_tag =
+    syntax: RegExp /(.*?)\s*\| (.*)/
+    convert: (m) -> 
+      return m[2] if m[1] == ''
+      enclose_tag(m[1], m[2])
+  translations = [
+    raw_html,
+    text_enclosing_tag
+  ]
+  
+  for translation in translations
+    m = translation.syntax.exec(s)
+    return translation.convert(m) if m
   s
 
 get_indented_block = (prefix_lines) ->
@@ -61,7 +81,6 @@ indent_lines = (input, output) ->
   
   recurse(prefix_lines)
 
-
 output = () ->
   s = ''
   self =
@@ -69,7 +88,6 @@ output = () ->
       s += data + '\n'
     text: ->
       s
-
 
 exports.convert = (s) ->  
   buffer = output()
