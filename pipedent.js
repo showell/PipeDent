@@ -1,5 +1,5 @@
 (function() {
-  var branch_method, enclose_tag, find_indentation, get_indented_block, get_tags, indent_lines, leaf_method, output;
+  var branch_method, convert, enclose_tag, find_indentation, get_indented_block, get_tags, indent_lines, leaf_method, output;
   get_tags = function(full_tag) {
     var tag;
     tag = full_tag.split(' ')[0];
@@ -88,9 +88,7 @@
         block_size = get_indented_block(prefix_lines);
         if (block_size === 1) {
           prefix_lines.shift();
-          if (line === "PASS") {
-            pass;
-          } else {
+          if (line !== "PASS") {
             append(prefix + leaf_method(line));
           }
         } else {
@@ -124,10 +122,15 @@
       }
     };
   };
-  exports.convert = function(s) {
+  convert = function(s) {
     var buffer;
     buffer = output();
     indent_lines(s, buffer);
     return buffer.text();
   };
+  if (typeof exports != "undefined" && exports !== null) {
+    exports.convert = convert;
+  } else {
+    this.pipedent_convert = convert;
+  }
 }).call(this);

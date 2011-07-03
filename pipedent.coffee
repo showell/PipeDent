@@ -68,9 +68,7 @@ indent_lines = (input, output) ->
       block_size = get_indented_block(prefix_lines)
       if block_size == 1
         prefix_lines.shift()
-        if line == "PASS"
-          pass
-        else
+        if line != "PASS"
           append(prefix + leaf_method(line))
       else
         block = prefix_lines[0...block_size]
@@ -89,11 +87,18 @@ output = () ->
     text: ->
       s
 
-exports.convert = (s) ->  
+convert = (s) ->  
   buffer = output()
   indent_lines(
     s, 
     buffer,
   )
   buffer.text()
+
+if exports?
+  # node.js has require mechanism
+  exports.convert = convert
+else
+  # in browser use a more unique name
+  this.pipedent_convert = convert
 
