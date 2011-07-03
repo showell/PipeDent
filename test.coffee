@@ -5,7 +5,6 @@ input = '''
       table
         tr
           td
-        tr
           td
   '''
   

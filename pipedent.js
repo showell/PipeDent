@@ -1,5 +1,21 @@
 (function() {
-  var branch_method, find_indentation, get_indented_block, indent_lines, leaf_method, output;
+  var branch_method, find_indentation, get_indented_block, get_tags, indent_lines, leaf_method, output;
+  get_tags = function(full_tag) {
+    var tag;
+    tag = full_tag.split()[0];
+    return ["<" + full_tag + ">", "</" + tag + ">"];
+  };
+  branch_method = function(output, block, recurse) {
+    var end_tag, line, prefix, start_tag, _ref, _ref2;
+    _ref = block[0], prefix = _ref[0], line = _ref[1];
+    _ref2 = get_tags(line), start_tag = _ref2[0], end_tag = _ref2[1];
+    output.append(prefix + start_tag);
+    recurse(block.slice(1));
+    return output.append(prefix + end_tag);
+  };
+  leaf_method = function(s) {
+    return s;
+  };
   get_indented_block = function(prefix_lines) {
     var i, len_prefix, line, new_prefix, prefix, _ref, _ref2;
     _ref = prefix_lines[0], prefix = _ref[0], line = _ref[1];
@@ -28,7 +44,7 @@
     }
     return [prefix, line];
   };
-  indent_lines = function(input, output, branch_method, leaf_method, pass_syntax, indentation_method, get_block) {
+  indent_lines = function(input, output) {
     var append, line, prefix_lines, recurse;
     append = output.append;
     recurse = function(prefix_lines) {
@@ -40,10 +56,10 @@
           append('');
           continue;
         }
-        block_size = get_block(prefix_lines);
+        block_size = get_indented_block(prefix_lines);
         if (block_size === 1) {
           prefix_lines.shift();
-          if (line === pass_syntax) {
+          if (line === "PASS") {
             pass;
           } else {
             append(prefix + leaf_method(line));
@@ -79,20 +95,10 @@
       }
     };
   };
-  branch_method = function(output, block, recurse) {
-    var line, prefix, _ref;
-    _ref = block[0], prefix = _ref[0], line = _ref[1];
-    output.append(prefix + line);
-    recurse(block.slice(1));
-    return output.append(prefix + "END");
-  };
-  leaf_method = function(s) {
-    return s;
-  };
   exports.convert = function(s) {
     var buffer;
     buffer = output();
-    indent_lines(s, buffer, branch_method, leaf_method, 'PASS', find_indentation, get_indented_block);
+    indent_lines(s, buffer);
     return buffer.text();
   };
 }).call(this);

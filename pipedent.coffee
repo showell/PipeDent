@@ -1,6 +1,6 @@
 get_tags = (full_tag) ->
   tag = full_tag.split()[0]
-  ["<#{full_tag}>", "</#{tag}"]
+  ["<#{full_tag}>", "</#{tag}>"]
 
 branch_method = (output, block, recurse) ->
   [prefix, line] = block[0]
@@ -45,7 +45,7 @@ indent_lines = (input, output) ->
         append('')
         continue
 
-      block_size = get_block(prefix_lines)
+      block_size = get_indented_block(prefix_lines)
       if block_size == 1
         prefix_lines.shift()
         if line == "PASS"
