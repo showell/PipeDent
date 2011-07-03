@@ -1,3 +1,17 @@
+get_tags = (full_tag) ->
+  tag = full_tag.split()[0]
+  ["<#{full_tag}>", "</#{tag}"]
+
+branch_method = (output, block, recurse) ->
+  [prefix, line] = block[0]
+  [start_tag, end_tag] = get_tags(line)
+  output.append(prefix + start_tag)
+  recurse(block[1..-1])
+  output.append(prefix + end_tag)
+
+leaf_method = (s) ->
+  s
+
 get_indented_block = (prefix_lines) ->
     [prefix, line] = prefix_lines[0]
     len_prefix = prefix.length
@@ -21,7 +35,7 @@ find_indentation = (line) ->
   prefix = '' if line == ''
   return [prefix, line]
 
-indent_lines = (input, output, branch_method, leaf_method, pass_syntax, indentation_method, get_block) ->
+indent_lines = (input, output) ->
   append = output.append
   recurse = (prefix_lines) ->
     while prefix_lines.length > 0
@@ -34,7 +48,7 @@ indent_lines = (input, output, branch_method, leaf_method, pass_syntax, indentat
       block_size = get_block(prefix_lines)
       if block_size == 1
         prefix_lines.shift()
-        if line == pass_syntax
+        if line == "PASS"
           pass
         else
           append(prefix + leaf_method(line))
@@ -56,25 +70,12 @@ output = () ->
     text: ->
       s
 
-branch_method = (output, block, recurse) ->
-  [prefix, line] = block[0]
-  output.append(prefix + line)
-  recurse(block[1..-1])
-  output.append(prefix + "END")
-
-leaf_method = (s) ->
-  s
 
 exports.convert = (s) ->  
   buffer = output()
   indent_lines(
     s, 
     buffer,
-    branch_method,
-    leaf_method,
-    'PASS',
-    find_indentation,
-    get_indented_block
   )
   buffer.text()
 
