@@ -48,7 +48,7 @@ stream = ($, append) ->
       | Here is a side-by-side comparison of input and output.
     table id="example" border=1
       tr valign="top"
-        td id="input"
+        td id="input" width="50%"
           h2 | INPUT
           pre
             PASS
