@@ -51,7 +51,7 @@
 </p>
 <table id="example" border="1">
   <tr valign="top">
-    <td id="input" width="50%">
+    <td id="input" width="350px">
       <h2>INPUT</h2>
       <pre>h1 | Overview
 div id="overview"
@@ -93,7 +93,7 @@ p
   | Here is a side-by-side comparison of input and output.
 table id="example" border=1
   tr valign="top"
-    td id="input" width="50%"
+    td id="input" width="350px"
       h2 | INPUT
       pre
         PASS
@@ -157,7 +157,7 @@ table id="example" border=1
 &lt;/p&gt;
 &lt;table id="example" border=1&gt;
   &lt;tr valign="top"&gt;
-    &lt;td id="input" width="50%"&gt;
+    &lt;td id="input" width="350px"&gt;
       &lt;h2&gt;INPUT&lt;/h2&gt;
       &lt;pre&gt;
       &lt;/pre&gt;
