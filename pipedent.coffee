@@ -6,8 +6,14 @@ enclose_tag = (tag, text) ->
   [start_tag, end_tag] = get_tags(tag)
   start_tag + text + end_tag
 
+html_syntax = RegExp /(\<.*)/
+
 branch_method = (output, block, recurse) ->
   [prefix, line] = block[0]
+  if html_syntax.exec(line)
+    output.append(prefix + line)
+    recurse(block[1..-1])
+    return
   [start_tag, end_tag] = get_tags(line)
   output.append(prefix + start_tag)
   recurse(block[1..-1])
@@ -15,7 +21,7 @@ branch_method = (output, block, recurse) ->
 
 leaf_method = (s) ->
   raw_html =
-    syntax: RegExp /(\<.*)/
+    syntax: html_syntax
     convert: (m) -> m[1]
   text_enclosing_tag =
     syntax: RegExp /(.*?)\s*\| (.*)/

@@ -1,5 +1,5 @@
 (function() {
-  var branch_method, convert, enclose_tag, find_indentation, get_indented_block, get_tags, indent_lines, leaf_method, output;
+  var branch_method, convert, enclose_tag, find_indentation, get_indented_block, get_tags, html_syntax, indent_lines, leaf_method, output;
   get_tags = function(full_tag) {
     var tag;
     tag = full_tag.split(' ')[0];
@@ -10,9 +10,15 @@
     _ref = get_tags(tag), start_tag = _ref[0], end_tag = _ref[1];
     return start_tag + text + end_tag;
   };
+  html_syntax = RegExp(/(\<.*)/);
   branch_method = function(output, block, recurse) {
     var end_tag, line, prefix, start_tag, _ref, _ref2;
     _ref = block[0], prefix = _ref[0], line = _ref[1];
+    if (html_syntax.exec(line)) {
+      output.append(prefix + line);
+      recurse(block.slice(1));
+      return;
+    }
     _ref2 = get_tags(line), start_tag = _ref2[0], end_tag = _ref2[1];
     output.append(prefix + start_tag);
     recurse(block.slice(1));
@@ -21,7 +27,7 @@
   leaf_method = function(s) {
     var m, raw_html, text_enclosing_tag, translation, translations, _i, _len;
     raw_html = {
-      syntax: RegExp(/(\<.*)/),
+      syntax: html_syntax,
       convert: function(m) {
         return m[1];
       }
