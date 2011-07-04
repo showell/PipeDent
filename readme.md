@@ -36,7 +36,19 @@
   pipedent.js on your web server or in a place where your
   node.js programs can find it.
 </p>
-<h1>Example</h1>
+<h1>Examples    </h1>
+<p>
+  See the Installation instructions for how to run the demo program.
+</p>
+<p>
+  You can see a full example here:
+</p>
+<p>
+  <a href="https://github.com/showell/PipeDent/blob/master/build_readme/build.coffee">Full Example</a>
+</p>
+<p>
+  Here is a side-by-side comparison of input and output.
+</p>
 <table id="example" border="1">
   <tr valign="top">
     <td id="input">
@@ -70,7 +82,15 @@ p
   | Once you are ready to create your own programs, install
   | pipedent.js on your web server or in a place where your
   | node.js programs can find it.
-h1 | Example
+h1 | Examples    
+p
+  See the Installation instructions for how to run the demo program.
+p
+  | You can see a full example here:
+p
+  a href="https://github.com/showell/PipeDent/blob/master/build_readme/build.coffee" | Full Example
+p
+  | Here is a side-by-side comparison of input and output.
 table id="example" border=1
   tr valign="top"
     td id="input"
@@ -122,7 +142,19 @@ table id="example" border=1
   pipedent.js on your web server or in a place where your
   node.js programs can find it.
 &lt;/p&gt;
-&lt;h1&gt;Example&lt;/h1&gt;
+&lt;h1&gt;Examples    &lt;/h1&gt;
+&lt;p&gt;
+  See the Installation instructions for how to run the demo program.
+&lt;/p&gt;
+&lt;p&gt;
+  You can see a full example here:
+&lt;/p&gt;
+&lt;p&gt;
+  &lt;a href="https://github.com/showell/PipeDent/blob/master/build_readme/build.coffee"&gt;Full Example&lt;/a&gt;
+&lt;/p&gt;
+&lt;p&gt;
+  Here is a side-by-side comparison of input and output.
+&lt;/p&gt;
 &lt;table id="example" border=1&gt;
   &lt;tr valign="top"&gt;
     &lt;td id="input"&gt;

@@ -5,8 +5,9 @@ html_escape = (s) ->
   s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
 
 stream = ($, append) ->
+  full_example = "https://github.com/showell/PipeDent/blob/master/build_readme/build.coffee"
   example = \
-    '''
+    """
     h1 | Overview
     div id="overview"
       p
@@ -36,7 +37,15 @@ stream = ($, append) ->
       | Once you are ready to create your own programs, install
       | pipedent.js on your web server or in a place where your
       | node.js programs can find it.
-    h1 | Example
+    h1 | Examples    
+    p
+      See the Installation instructions for how to run the demo program.
+    p
+      | You can see a full example here:
+    p
+      a href="#{full_example}" | Full Example
+    p
+      | Here is a side-by-side comparison of input and output.
     table id="example" border=1
       tr valign="top"
         td id="input"
@@ -47,7 +56,7 @@ stream = ($, append) ->
           h2 | HTML OUTPUT
           pre
             PASS
-    '''
+    """
   append pipedent.convert example
   $("#example #input pre").text(example)
   $("#example #output pre").text html_escape pipedent.convert(example)
