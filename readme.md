@@ -18,13 +18,10 @@
 </pre>
 <p>For usage in the browser, follow the model of example.htm.</p>
 <p>For usage on the server, follow the model of example.coffee.</p>
-<p>For command-line conversion, see convert.coffee.</p>
-<pre>
-  ~/WORKSPACE/PipeDent > coffee -c example.coffee && node example.js
-  <h1>Hello World</h1>
-
-  ~/WORKSPACE/PipeDent > echo "h1 | Hello World" > /tmp/foo.pipedent && node convert.js /tmp/foo.pipedent
-  <h1>Hello World</h1>
-</pre>
+<p>To convert files from the command line, see convert.js.</p>
+<p>
+  The only file that you really need in the distribution is 
+  pipedent.js.
+</p>
 
 
