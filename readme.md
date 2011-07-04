@@ -47,13 +47,11 @@
   <a href="https://github.com/showell/PipeDent/blob/master/build_readme/build.coffee">Full Example</a>
 </p>
 <p>
-  Here is a side-by-side comparison of input and output.
+  Here is an example PipeDent translation:
 </p>
-<table id="example" border="1">
-  <tr valign="top">
-    <td id="input" width="350px">
-      <h2>INPUT</h2>
-      <pre>h1 | Overview
+<div>
+  <h2>INPUT</h2>
+  <pre id="input">h1 | Overview
 div id="overview"
   p
     | PipeDent is a tool for creating HTML with small snippets
@@ -90,21 +88,19 @@ p
 p
   a href="https://github.com/showell/PipeDent/blob/master/build_readme/build.coffee" | Full Example
 p
-  | Here is a side-by-side comparison of input and output.
-table id="example" border=1
-  tr valign="top"
-    td id="input" width="350px"
-      h2 | INPUT
-      pre
-        PASS
-    td id="output"
-      h2 | HTML OUTPUT
-      pre
-        PASS</pre>
-    </td>
-    <td id="output">
-      <h2>HTML OUTPUT</h2>
-      <pre>&lt;h1&gt;Overview&lt;/h1&gt;
+  | Here is an example PipeDent translation:
+div
+  h2 | INPUT
+  pre id="input"
+    PASS
+div
+  h2 | HTML OUTPUT
+  pre id="output"
+    PASS</pre>
+</div>
+<div>
+  <h2>HTML OUTPUT</h2>
+  <pre id="output">&lt;h1&gt;Overview&lt;/h1&gt;
 &lt;div id="overview"&gt;
   &lt;p&gt;
     PipeDent is a tool for creating HTML with small snippets
@@ -153,24 +149,18 @@ table id="example" border=1
   &lt;a href="https://github.com/showell/PipeDent/blob/master/build_readme/build.coffee"&gt;Full Example&lt;/a&gt;
 &lt;/p&gt;
 &lt;p&gt;
-  Here is a side-by-side comparison of input and output.
+  Here is an example PipeDent translation:
 &lt;/p&gt;
-&lt;table id="example" border=1&gt;
-  &lt;tr valign="top"&gt;
-    &lt;td id="input" width="350px"&gt;
-      &lt;h2&gt;INPUT&lt;/h2&gt;
-      &lt;pre&gt;
-      &lt;/pre&gt;
-    &lt;/td&gt;
-    &lt;td id="output"&gt;
-      &lt;h2&gt;HTML OUTPUT&lt;/h2&gt;
-      &lt;pre&gt;
-      &lt;/pre&gt;
-    &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/table&gt;
+&lt;div&gt;
+  &lt;h2&gt;INPUT&lt;/h2&gt;
+  &lt;pre id="input"&gt;
+  &lt;/pre&gt;
+&lt;/div&gt;
+&lt;div&gt;
+  &lt;h2&gt;HTML OUTPUT&lt;/h2&gt;
+  &lt;pre id="output"&gt;
+  &lt;/pre&gt;
+&lt;/div&gt;
 </pre>
-    </td>
-  </tr>
-</table>
+</div>
 

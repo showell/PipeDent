@@ -45,21 +45,19 @@ stream = ($, append) ->
     p
       a href="#{full_example}" | Full Example
     p
-      | Here is a side-by-side comparison of input and output.
-    table id="example" border=1
-      tr valign="top"
-        td id="input" width="350px"
-          h2 | INPUT
-          pre
-            PASS
-        td id="output"
-          h2 | HTML OUTPUT
-          pre
-            PASS
+      | Here is an example PipeDent translation:
+    div
+      h2 | INPUT
+      pre id="input"
+        PASS
+    div
+      h2 | HTML OUTPUT
+      pre id="output"
+        PASS
     """
   append pipedent.convert example
-  $("#example #input pre").text(example)
-  $("#example #output pre").text html_escape pipedent.convert(example)
+  $("pre#input").text(example)
+  $("pre#output").text html_escape pipedent.convert(example)
 
 window = jsdom.jsdom().createWindow()
   
