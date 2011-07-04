@@ -24,11 +24,14 @@ $(document).ready ->
   console.log(demo_output)
   $("#input").text(demo_input)
   $("#output").text(demo_output)
+  last_parsed_text = demo_input
   # This is a crude mechanism to continually parse
   # the input.
   parse = ->
     input = $("#input").val()
-    output = convert(input)
-    $("#output").text(output)
+    if input != last_parsed_text
+      output = convert(input)
+      $("#output").text(output)
+      last_parsed_text = input
     setTimeout parse, 200
   setTimeout parse, 200
