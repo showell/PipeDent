@@ -44,7 +44,7 @@
   You can see a full example here:
 </p>
 <p>
-  <a href="https://github.com/showell/PipeDent/blob/master/build_readme/build.coffee">Full Example</a>
+  <a href="https://github.com/showell/PipeDent/blob/master/build_readme/build.coffee">Building a Readme dynamically</a>
 </p>
 <p>
   Here is an example PipeDent translation:
@@ -86,7 +86,7 @@ p
 p
   | You can see a full example here:
 p
-  a href="https://github.com/showell/PipeDent/blob/master/build_readme/build.coffee" | Full Example
+  a href="https://github.com/showell/PipeDent/blob/master/build_readme/build.coffee" | Building a Readme dynamically
 p
   | Here is an example PipeDent translation:
 div
@@ -146,7 +146,7 @@ div
   You can see a full example here:
 &lt;/p&gt;
 &lt;p&gt;
-  &lt;a href="https://github.com/showell/PipeDent/blob/master/build_readme/build.coffee"&gt;Full Example&lt;/a&gt;
+  &lt;a href="https://github.com/showell/PipeDent/blob/master/build_readme/build.coffee"&gt;Building a Readme dynamically&lt;/a&gt;
 &lt;/p&gt;
 &lt;p&gt;
   Here is an example PipeDent translation:

@@ -1,6 +1,14 @@
 jsdom  = require("jsdom")
 pipedent = require("../pipedent")
 
+# This program builds HTML dynamically on the server side using these tools:
+#   PipeDent - 
+#     allows you to create skeleton HTML with lighter syntax
+#   JSDom - 
+#     gives you access to jQuery on the server side, helps you
+#     fill in dynamic content
+
+
 html_escape = (s) ->
   s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
 
@@ -43,7 +51,7 @@ stream = ($, append) ->
     p
       | You can see a full example here:
     p
-      a href="#{full_example}" | Full Example
+      a href="#{full_example}" | Building a Readme dynamically
     p
       | Here is an example PipeDent translation:
     div
