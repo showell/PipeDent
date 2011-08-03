@@ -84,7 +84,7 @@ run_test
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" media="all" href="docco.css" />
       body
-        <div id="container">
+        div id="container"
           <div id="background"></div>
           <% if (sources.length > 1) { %>
             <div id="jump_to">
@@ -102,7 +102,7 @@ run_test
             </div>
           <% } %>
           table cellpadding="0" cellspacing="0"
-            <thead>
+            thead
               <tr>
                 <th class="docs">
                   <h1>
@@ -112,24 +112,17 @@ run_test
                 <th class="code">
                 </th>
               </tr>
-            </thead>
-            <tbody>
+            tbody
               <% for (var i=0, l=sections.length; i<l; i++) { %>
                 <% var section = sections[i]; %>
-                <tr id="section-<%= i + 1 %>">
-                  <td class="docs">
-                    <div class="pilwrap">
-                      <a class="pilcrow" href="#section-<%= i + 1 %>">&#182;</a>
-                    </div>
+                tr id="section-<%= i + 1 %>"
+                  td class="docs"
+                    div class="pilwrap"
+                      a class="pilcrow" href="#section-<%= i + 1 %>" | &#182;
                     <%= section.docs_html %>
-                  </td>
-                  <td class="code">
+                  td class="code"
                     <%= section.code_html %>
-                  </td>
-                </tr>
               <% } %>
-            </tbody>
-        </div>
     '''
     output: \
       '''
