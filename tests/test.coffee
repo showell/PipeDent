@@ -1,12 +1,13 @@
 pipedent = require "../pipedent"
+fs = require 'fs'
 convert = pipedent.convert
 
 assert_equal = (expected, actual, msg) ->
   if expected != actual
     console.warn msg
-    # console.log '====='
-    # console.log "EXPECTED"
-    # console.log expected
+    console.warn '====='
+    console.warn "EXPECTED"
+    console.warn expected
     console.warn 'ACTUAL'
     console.warn actual
     throw "fail"
@@ -74,50 +75,8 @@ run_test
 
 run_test
   use_case: "Sit nicely on top of microtemplates"
-  input: \
-    '''
-    <!DOCTYPE html>
-
-    html
-      head
-        title | <%= title %>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" media="all" href="docco.css" />
-      body
-        div id="container"
-          <div id="background"></div>
-          <% if (sources.length > 1) { %>
-            div id="jump_to"
-              Jump To &hellip;
-              div id="jump_wrapper"
-                div id="jump_page"
-                  <% for (var i=0, l=sources.length; i<l; i++) { %>
-                    <% var source = sources[i]; %>
-                    a class="source" href="<%= path.basename(destination(source)) %>"
-                      <%= path.basename(source) %>
-                  <% } %>
-          <% } %>
-          table cellpadding="0" cellspacing="0"
-            thead
-              tr
-                th class="docs"
-                  h1
-                    <%= title %>
-                th class="code"
-                  PASS
-            tbody
-              <% for (var i=0, l=sections.length; i<l; i++) { %>
-                <% var section = sections[i]; %>
-                tr id="section-<%= i + 1 %>"
-                  td class="docs"
-                    div class="pilwrap"
-                      a class="pilcrow" href="#section-<%= i + 1 %>" | &#182;
-                    <%= section.docs_html %>
-                  td class="code"
-                    <%= section.code_html %>
-              <% } %>
-    '''
-    output: \
+  input: fs.readFileSync('./docco_example.pipedent').toString()
+  output: \
       '''
       <!DOCTYPE html>
 
