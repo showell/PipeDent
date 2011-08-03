@@ -109,8 +109,8 @@ run_test
                     <%= title %>
                   </h1>
                 </th>
-                <th class="code">
-                </th>
+                th class="code"
+                  PASS
             tbody
               <% for (var i=0, l=sections.length; i<l; i++) { %>
                 <% var section = sections[i]; %>
