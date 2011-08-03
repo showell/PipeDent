@@ -87,27 +87,23 @@ run_test
         div id="container"
           <div id="background"></div>
           <% if (sources.length > 1) { %>
-            <div id="jump_to">
+            div id="jump_to"
               Jump To &hellip;
-              <div id="jump_wrapper">
-                <div id="jump_page">
+              div id="jump_wrapper"
+                div id="jump_page"
                   <% for (var i=0, l=sources.length; i<l; i++) { %>
                     <% var source = sources[i]; %>
                     <a class="source" href="<%= path.basename(destination(source)) %>">
                       <%= path.basename(source) %>
                     </a>
                   <% } %>
-                </div>
-              </div>
-            </div>
           <% } %>
           table cellpadding="0" cellspacing="0"
             thead
               tr
                 th class="docs"
-                  <h1>
+                  h1
                     <%= title %>
-                  </h1>
                 th class="code"
                   PASS
             tbody
