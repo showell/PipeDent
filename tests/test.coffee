@@ -89,21 +89,20 @@ run_test
         <body>
           <div id="container">
             <div id="background"></div>
-            <% if (sources.length > 1) { %>
+            <% if sources.length > 1: %>
               <div id="jump_to">
                 Jump To &hellip;
                 <div id="jump_wrapper">
                   <div id="jump_page">
-                    <% for (var i=0, l=sources.length; i<l; i++) { %>
-                      <% var source = sources[i]; %>
+                    <% for source in sources: %>
                       <a class="source" href="<%= path.basename(destination(source)) %>">
                         <%= path.basename(source) %>
                       </a>
-                    <% } %>
+                    <% end %>
                   </div>
                 </div>
               </div>
-            <% } %>
+            <% end %>
             <table cellpadding="0" cellspacing="0">
               <thead>
                 <tr>
@@ -117,8 +116,7 @@ run_test
                 </tr>
               </thead>
               <tbody>
-                <% for (var i=0, l=sections.length; i<l; i++) { %>
-                  <% var section = sections[i]; %>
+                <% for section in sections: %>
                   <tr id="section-<%= i + 1 %>">
                     <td class="docs">
                       <div class="pilwrap">
@@ -130,7 +128,7 @@ run_test
                       <%= section.code_html %>
                     </td>
                   </tr>
-                <% } %>
+                <% end %>
               </tbody>
             </table>
           </div>

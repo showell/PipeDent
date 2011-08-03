@@ -8,17 +8,16 @@ html
   body
     div id="container"
       <div id="background"></div>
-      <% if (sources.length > 1) { %>
+      <% if sources.length > 1: %>
         div id="jump_to"
           Jump To &hellip;
           div id="jump_wrapper"
             div id="jump_page"
-              <% for (var i=0, l=sources.length; i<l; i++) { %>
-                <% var source = sources[i]; %>
+              <% for source in sources: %>
                 a class="source" href="<%= path.basename(destination(source)) %>"
                   <%= path.basename(source) %>
-              <% } %>
-      <% } %>
+              <% end %>
+      <% end %>
       table cellpadding="0" cellspacing="0"
         thead
           tr
@@ -28,8 +27,7 @@ html
             th class="code"
               PASS
         tbody
-          <% for (var i=0, l=sections.length; i<l; i++) { %>
-            <% var section = sections[i]; %>
+          <% for section in sections: %>
             tr id="section-<%= i + 1 %>"
               td class="docs"
                 div class="pilwrap"
@@ -37,4 +35,4 @@ html
                 <%= section.docs_html %>
               td class="code"
                 <%= section.code_html %>
-          <% } %>
+          <% end %>
