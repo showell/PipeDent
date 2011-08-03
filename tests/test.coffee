@@ -103,7 +103,7 @@ run_test
           <% } %>
           table cellpadding="0" cellspacing="0"
             thead
-              <tr>
+              tr
                 <th class="docs">
                   <h1>
                     <%= title %>
@@ -111,7 +111,6 @@ run_test
                 </th>
                 <th class="code">
                 </th>
-              </tr>
             tbody
               <% for (var i=0, l=sections.length; i<l; i++) { %>
                 <% var section = sections[i]; %>
