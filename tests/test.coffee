@@ -104,11 +104,10 @@ run_test
           table cellpadding="0" cellspacing="0"
             thead
               tr
-                <th class="docs">
+                th class="docs"
                   <h1>
                     <%= title %>
                   </h1>
-                </th>
                 th class="code"
                   PASS
             tbody
