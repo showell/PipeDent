@@ -10,7 +10,7 @@
     _ref = get_tags(tag), start_tag = _ref[0], end_tag = _ref[1];
     return start_tag + text + end_tag;
   };
-  html_syntax = RegExp(/(\<.*)/);
+  html_syntax = RegExp(/(^\<.*)/);
   branch_method = function(output, block, recurse) {
     var end_tag, line, prefix, start_tag, _ref, _ref2;
     _ref = block[0], prefix = _ref[0], line = _ref[1];
@@ -134,7 +134,7 @@
     indent_lines(s, buffer);
     return buffer.text();
   };
-  if (typeof exports != "undefined" && exports !== null) {
+  if (typeof exports !== "undefined" && exports !== null) {
     exports.convert = convert;
   } else {
     this.pipedent_convert = convert;

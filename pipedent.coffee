@@ -6,7 +6,7 @@ enclose_tag = (tag, text) ->
   [start_tag, end_tag] = get_tags(tag)
   start_tag + text + end_tag
 
-html_syntax = RegExp /(\<.*)/
+html_syntax = RegExp /(^\<.*)/
 
 branch_method = (output, block, recurse) ->
   [prefix, line] = block[0]
