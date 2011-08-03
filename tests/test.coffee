@@ -93,9 +93,8 @@ run_test
                 div id="jump_page"
                   <% for (var i=0, l=sources.length; i<l; i++) { %>
                     <% var source = sources[i]; %>
-                    <a class="source" href="<%= path.basename(destination(source)) %>">
+                    a class="source" href="<%= path.basename(destination(source)) %>"
                       <%= path.basename(source) %>
-                    </a>
                   <% } %>
           <% } %>
           table cellpadding="0" cellspacing="0"
