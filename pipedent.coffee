@@ -116,12 +116,12 @@ HTML = (append) ->
   line_method: line_method
 
 output = () ->
-  s = ''
+  tokens = []
   self =
     append: (data) ->
-      s += data + '\n'
+      tokens.push data
     text: ->
-      s
+      tokens.join('\n')
 
 convert = (s) ->  
   buffer = output()

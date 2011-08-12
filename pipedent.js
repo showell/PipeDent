@@ -154,14 +154,14 @@
     };
   };
   output = function() {
-    var s, self;
-    s = '';
+    var self, tokens;
+    tokens = [];
     return self = {
       append: function(data) {
-        return s += data + '\n';
+        return tokens.push(data);
       },
       text: function() {
-        return s;
+        return tokens.join('\n');
       }
     };
   };
