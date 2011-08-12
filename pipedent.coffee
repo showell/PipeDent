@@ -42,8 +42,8 @@ indent_lines = (input, output, branch_method, leaf_method) ->
         prefix_lines = prefix_lines[block_size..-1]
         branch_method(output, block, recurse)
     return
+    
   prefix_lines = (find_indentation(line) for line in input.split('\n'))
-  
   recurse(prefix_lines)
 
 HTML = ->
