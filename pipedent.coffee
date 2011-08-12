@@ -38,9 +38,10 @@ indent_lines = (input, output, branch_method, leaf_method) ->
         if line != "PASS"
           append(prefix + leaf_method(line))
       else
-        block = prefix_lines[0...block_size]
+        header = prefix_lines[0]
+        block = prefix_lines[1...block_size]
         prefix_lines = prefix_lines[block_size..-1]
-        branch_method(output, block, recurse)
+        branch_method(output, header, block, recurse)
     return
     
   prefix_lines = (IndentationHelper.find_indentation(line) for line in input.split('\n'))
@@ -57,15 +58,15 @@ HTML = ->
 
   html_syntax = RegExp /(^\<.*)/
 
-  branch_method = (output, block, recurse) ->
-    [prefix, line] = block[0]
+  branch_method = (output, header, block, recurse) ->
+    [prefix, line] = header
     if html_syntax.exec(line)
       output.append(prefix + line)
-      recurse(block[1..-1])
+      recurse(block)
       return
     [start_tag, end_tag] = get_tags(line)
     output.append(prefix + start_tag)
-    recurse(block[1..-1])
+    recurse(block)
     output.append(prefix + end_tag)
 
   leaf_method = (s) ->

@@ -34,7 +34,7 @@
     var append, line, prefix_lines, recurse;
     append = output.append;
     recurse = function(prefix_lines) {
-      var block, block_size, line, prefix, _ref;
+      var block, block_size, header, line, prefix, _ref;
       while (prefix_lines.length > 0) {
         _ref = prefix_lines[0], prefix = _ref[0], line = _ref[1];
         if (line === '') {
@@ -49,9 +49,10 @@
             append(prefix + leaf_method(line));
           }
         } else {
-          block = prefix_lines.slice(0, block_size);
+          header = prefix_lines[0];
+          block = prefix_lines.slice(1, block_size);
           prefix_lines = prefix_lines.slice(block_size);
-          branch_method(output, block, recurse);
+          branch_method(output, header, block, recurse);
         }
       }
     };
@@ -80,17 +81,17 @@
       return start_tag + text + end_tag;
     };
     html_syntax = RegExp(/(^\<.*)/);
-    branch_method = function(output, block, recurse) {
-      var end_tag, line, prefix, start_tag, _ref, _ref2;
-      _ref = block[0], prefix = _ref[0], line = _ref[1];
+    branch_method = function(output, header, block, recurse) {
+      var end_tag, line, prefix, start_tag, _ref;
+      prefix = header[0], line = header[1];
       if (html_syntax.exec(line)) {
         output.append(prefix + line);
-        recurse(block.slice(1));
+        recurse(block);
         return;
       }
-      _ref2 = get_tags(line), start_tag = _ref2[0], end_tag = _ref2[1];
+      _ref = get_tags(line), start_tag = _ref[0], end_tag = _ref[1];
       output.append(prefix + start_tag);
-      recurse(block.slice(1));
+      recurse(block);
       return output.append(prefix + end_tag);
     };
     leaf_method = function(s) {
