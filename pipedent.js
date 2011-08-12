@@ -87,7 +87,7 @@
     return parser(ArrayView(prefix_line_array));
   };
   HTML = function(append) {
-    var branch_method, enclose_tag, get_tags, html_syntax, leaf_method, line_method;
+    var enclose_tag, get_tags, html_syntax, leaf_method, line_method, parse_to_html;
     get_tags = function(full_tag) {
       var tag;
       tag = full_tag.split(' ')[0];
@@ -102,7 +102,7 @@
     line_method = function(prefix, line) {
       return append(prefix + leaf_method(line));
     };
-    branch_method = function(indented_lines) {
+    parse_to_html = function(indented_lines) {
       var block, block_size, end_tag, line, prefix, start_tag, _ref, _ref2;
       if (indented_lines.len() === 0) return;
       _ref = indented_lines.shift(), prefix = _ref[0], line = _ref[1];
@@ -116,16 +116,16 @@
           block = indented_lines.shift_slice(block_size);
           if (html_syntax.exec(line)) {
             append(prefix + line);
-            branch_method(block);
+            parse_to_html(block);
           } else {
             _ref2 = get_tags(line), start_tag = _ref2[0], end_tag = _ref2[1];
             append(prefix + start_tag);
-            branch_method(block);
+            parse_to_html(block);
             append(prefix + end_tag);
           }
         }
       }
-      return branch_method(indented_lines);
+      return parse_to_html(indented_lines);
     };
     leaf_method = function(s) {
       var empty_closed_tag, m, raw_html, text_enclosing_tag, translation, translations, _i, _len;
@@ -157,7 +157,7 @@
       return s;
     };
     return {
-      branch_method: branch_method,
+      parse_to_html: parse_to_html,
       line_method: line_method
     };
   };
@@ -177,7 +177,7 @@
     var buffer, html;
     buffer = output();
     html = HTML(buffer.append);
-    parse(s, html.branch_method);
+    parse(s, html.parse_to_html);
     return buffer.text();
   };
   convert_widget_package = function(s) {
@@ -194,7 +194,7 @@
         buffer = output();
         if (key === 'HTML') {
           html = HTML(buffer.append);
-          html.branch_method(block);
+          html.parse_to_html(block);
         } else {
           while (block.len() > 0) {
             _ref2 = block.shift(), prefix = _ref2[0], line = _ref2[1];

@@ -71,7 +71,7 @@ HTML = (append) ->
   line_method = (prefix, line) ->
     append(prefix + leaf_method(line))
     
-  branch_method = (indented_lines) ->
+  parse_to_html = (indented_lines) ->
     if indented_lines.len() == 0
       return
     [prefix, line] = indented_lines.shift()
@@ -86,13 +86,13 @@ HTML = (append) ->
        
         if html_syntax.exec(line)
           append(prefix + line)
-          branch_method(block)
+          parse_to_html(block)
         else
           [start_tag, end_tag] = get_tags(line)
           append(prefix + start_tag)
-          branch_method(block)
+          parse_to_html(block)
           append(prefix + end_tag)
-    branch_method(indented_lines)
+    parse_to_html(indented_lines)
 
   leaf_method = (s) ->
     raw_html =
@@ -118,7 +118,7 @@ HTML = (append) ->
       return translation.convert(m) if m
     s
     
-  branch_method: branch_method
+  parse_to_html: parse_to_html
   line_method: line_method
 
 output = () ->
@@ -132,7 +132,7 @@ output = () ->
 convert = (s) ->  
   buffer = output()
   html = HTML(buffer.append)
-  parse(s, html.branch_method)
+  parse(s, html.parse_to_html)
   buffer.text()
 
 convert_widget_package = (s) ->
@@ -148,7 +148,7 @@ convert_widget_package = (s) ->
 
       if key == 'HTML'
         html = HTML(buffer.append)
-        html.branch_method(block)
+        html.parse_to_html(block)
       else
         while block.len() > 0
           [prefix, line] = block.shift()
