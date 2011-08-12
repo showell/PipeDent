@@ -38,6 +38,11 @@
     output: '<foo>\n  bar\n  bar\n  <b>html passes thru</b>\n</foo>\n\n<yo></yo>'
   });
   run_test({
+    use_case: "Deep Indent",
+    input: 'foo\n  bar\n    baz\n      yo\n      \n  bar2\n    baz\n  \n  bar3\n    baz\n      yo',
+    output: '<foo>\n  <bar>\n    <baz>\n      yo\n    </baz>\n  </bar>\n\n  <bar2>\n    baz\n  </bar2>\n\n  <bar3>\n    <baz>\n      yo\n    </baz>\n  </bar3>\n</foo>'
+  });
+  run_test({
     use_case: "Trailing Pipe",
     input: 'div id="yo" |',
     output: '<div id="yo"></div>'

@@ -35,8 +35,6 @@ run_test
       <h2>foo</h2>
     </div>
     '''
-  
-
 run_test
   use_case: "Basic Indent"
   input: \
@@ -57,6 +55,43 @@ run_test
     </foo>
 
     <yo></yo>
+    '''
+
+run_test
+  use_case: "Deep Indent"
+  input: \
+    '''
+    foo
+      bar
+        baz
+          yo
+          
+      bar2
+        baz
+      
+      bar3
+        baz
+          yo
+    '''
+  output: \
+    '''
+    <foo>
+      <bar>
+        <baz>
+          yo
+        </baz>
+      </bar>
+
+      <bar2>
+        baz
+      </bar2>
+
+      <bar3>
+        <baz>
+          yo
+        </baz>
+      </bar3>
+    </foo>
     '''
 
 run_test
