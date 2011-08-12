@@ -2,6 +2,8 @@
   var ArrayView, HTML, IndentationHelper, convert, indent_lines, output;
   ArrayView = function(list, first, last) {
     var index;
+    if (first == null) first = 0;
+    if (last == null) last = list.length;
     index = first;
     return {
       shift: function() {
@@ -9,9 +11,6 @@
         obj = list[index];
         index += 1;
         return obj;
-      },
-      empty: function() {
-        return index >= last;
       },
       peek: function() {
         return list[index];
@@ -24,21 +23,25 @@
       },
       to_array: function() {
         return list.slice(first, last);
+      },
+      shift_slice: function(how_many) {
+        var view;
+        view = ArrayView(list, index, index + how_many);
+        index += how_many;
+        return view;
       }
     };
   };
   IndentationHelper = {
-    get_indented_block: function(prefix_lines) {
-      var i, len_prefix, line, new_prefix, prefix, _ref, _ref2;
-      _ref = prefix_lines.at(0), prefix = _ref[0], line = _ref[1];
-      len_prefix = prefix.length;
-      i = 1;
+    get_indented_block: function(len_prefix, prefix_lines) {
+      var i, line, new_prefix, _ref;
+      i = 0;
       while (i < prefix_lines.len()) {
-        _ref2 = prefix_lines.at(i), new_prefix = _ref2[0], line = _ref2[1];
+        _ref = prefix_lines.at(i), new_prefix = _ref[0], line = _ref[1];
         if (line && new_prefix.length <= len_prefix) break;
         i += 1;
       }
-      while (i - 1 > 0 && prefix_lines.at(i - 1)[1] === '') {
+      while (i - 1 >= 0 && prefix_lines.at(i - 1)[1] === '') {
         i -= 1;
       }
       return i;
@@ -56,26 +59,23 @@
   indent_lines = function(input, branch_method, line_method) {
     var line, prefix_lines, recurse;
     recurse = function(prefix_lines) {
-      var block, block_size, header, line, prefix, recurse_block, _ref, _ref2;
-      while (prefix_lines.length > 0) {
-        _ref = prefix_lines[0], prefix = _ref[0], line = _ref[1];
+      var block_size, line, prefix, recurse_block, _ref;
+      while (prefix_lines.len() > 0) {
+        _ref = prefix_lines.shift(), prefix = _ref[0], line = _ref[1];
         if (line === '') {
-          prefix_lines.shift();
           line_method(prefix, line);
           continue;
         }
-        block_size = IndentationHelper.get_indented_block(ArrayView(prefix_lines, 0, prefix_lines.length));
-        if (block_size === 1) {
-          _ref2 = prefix_lines.shift(), prefix = _ref2[0], line = _ref2[1];
+        block_size = IndentationHelper.get_indented_block(prefix.length, prefix_lines);
+        if (block_size === 0) {
           line_method(prefix, line);
         } else {
-          header = prefix_lines[0];
-          block = prefix_lines.slice(1, block_size);
           recurse_block = function() {
+            var block;
+            block = prefix_lines.shift_slice(block_size);
             return recurse(block);
           };
-          prefix_lines = prefix_lines.slice(block_size);
-          branch_method(header, recurse_block);
+          branch_method(prefix, line, recurse_block);
         }
       }
     };
@@ -89,7 +89,7 @@
       }
       return _results;
     })();
-    return recurse(prefix_lines);
+    return recurse(ArrayView(prefix_lines));
   };
   HTML = function(append) {
     var branch_method, enclose_tag, get_tags, html_syntax, leaf_method, line_method;
@@ -107,9 +107,8 @@
     line_method = function(prefix, line) {
       return append(prefix + leaf_method(line));
     };
-    branch_method = function(header, recurse_block) {
-      var end_tag, line, prefix, start_tag, _ref;
-      prefix = header[0], line = header[1];
+    branch_method = function(prefix, line, recurse_block) {
+      var end_tag, start_tag, _ref;
       if (html_syntax.exec(line)) {
         append(prefix + line);
         recurse_block();

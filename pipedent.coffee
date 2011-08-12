@@ -1,11 +1,11 @@
 ArrayView = (list, first, last) ->
+  first = 0 unless first?
+  last = list.length unless last?
   index = first
   shift: ->
     obj = list[index]
     index += 1
     obj
-  empty: ->
-    index >= last
   peek: ->
     list[index]
   len: ->
@@ -15,21 +15,23 @@ ArrayView = (list, first, last) ->
   to_array: ->
     # shim
     list[first...last]
+  shift_slice: (how_many) ->
+    view = ArrayView(list, index, index + how_many)
+    index += how_many
+    view
     
 
 IndentationHelper =
-  get_indented_block: (prefix_lines) ->
-      [prefix, line] = prefix_lines.at(0)
-      len_prefix = prefix.length
-      # Find the first nonempty line with len(prefix) <= len(prefix)
-      i = 1
+  get_indented_block: (len_prefix, prefix_lines) ->
+      # Find how many lines are indented
+      i = 0
       while i < prefix_lines.len()
           [new_prefix, line] = prefix_lines.at(i)
           if line and new_prefix.length <= len_prefix
               break
           i += 1
       # Rewind to exclude empty lines
-      while i-1 > 0 and prefix_lines.at(i-1)[1] == ''
+      while i-1 >= 0 and prefix_lines.at(i-1)[1] == ''
           i -= 1
       return i
 
@@ -43,27 +45,24 @@ IndentationHelper =
 
 indent_lines = (input, branch_method, line_method) ->
   recurse = (prefix_lines) ->
-    while prefix_lines.length > 0
-      [prefix, line] = prefix_lines[0]
+    while prefix_lines.len() > 0
+      [prefix, line] = prefix_lines.shift()
       if line == ''
-        prefix_lines.shift()
         line_method(prefix, line)
         continue
-
-      block_size = IndentationHelper.get_indented_block ArrayView(prefix_lines, 0, prefix_lines.length)
-      if block_size == 1
-        [prefix, line] = prefix_lines.shift()
+      
+      block_size = IndentationHelper.get_indented_block prefix.length, prefix_lines
+      if block_size == 0
         line_method(prefix, line)
       else
-        header = prefix_lines[0]
-        block = prefix_lines[1...block_size]
-        recurse_block = -> recurse(block)
-        prefix_lines = prefix_lines[block_size..-1]
-        branch_method(header, recurse_block)
+        recurse_block = -> 
+          block = prefix_lines.shift_slice(block_size) 
+          recurse(block)
+        branch_method(prefix, line, recurse_block)
     return
     
   prefix_lines = (IndentationHelper.find_indentation(line) for line in input.split('\n'))
-  recurse(prefix_lines)
+  recurse(ArrayView prefix_lines)
 
 HTML = (append) ->
   get_tags = (full_tag) ->
@@ -79,8 +78,7 @@ HTML = (append) ->
   line_method = (prefix, line) ->
     append(prefix + leaf_method(line))
     
-  branch_method = (header, recurse_block) ->
-    [prefix, line] = header
+  branch_method = (prefix, line, recurse_block) ->
     if html_syntax.exec(line)
       append(prefix + line)
       recurse_block()
