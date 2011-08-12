@@ -1,11 +1,11 @@
 (function() {
-  var assert_equal, convert, convert_widget_package, fs, pipedent, run_package_test, run_test;
+  var assert_equal, convert, convert_widget_package, fs, indent, pipedent, run_package_test, run_test;
   pipedent = require("../pipedent");
   fs = require('fs');
   convert = pipedent.convert;
   convert_widget_package = pipedent.convert_widget_package;
   assert_equal = function(expected, actual, msg) {
-    var i, line, _len, _ref;
+    var actual_line, i, line, _len, _ref;
     if (expected.trim() !== actual.trim()) {
       console.warn(msg);
       console.warn('=====');
@@ -16,10 +16,27 @@
       _ref = expected.split("\n");
       for (i = 0, _len = _ref.length; i < _len; i++) {
         line = _ref[i];
-        if (line !== actual.split("\n")[i]) console.log("****", line);
+        actual_line = actual.split("\n")[i];
+        if (line !== actual_line) {
+          console.log("****", line);
+          console.log("----", actual_line);
+          console.log("");
+        }
       }
       throw "fail";
     }
+  };
+  indent = function(s, indent) {
+    var lines;
+    lines = s.split("\n");
+    lines = lines.map(function(line) {
+      if (line === '') {
+        return line;
+      } else {
+        return indent + line;
+      }
+    });
+    return lines.join("\n");
   };
   run_test = function(test) {
     var actual, expected, msg;
@@ -30,16 +47,22 @@
   };
   run_package_test = function(test) {
     var actual, expected, msg;
-    expected = test.output + "\n";
+    expected = indent(test.output, '  ');
     actual = convert_widget_package(test.input)[test.key];
     msg = "test: " + test.use_case;
     return assert_equal(expected, actual, msg);
   };
   run_package_test({
-    use_case: "Basic",
-    input: 'HTML\n  p | hello',
+    use_case: "Basic HTML",
+    input: 'HTML\n  p | hello\n  b | world',
     key: 'HTML',
-    output: '<p>hello</p>'
+    output: '<p>hello</p>\n<b>world</b>'
+  });
+  run_package_test({
+    use_case: "Basic CSS",
+    input: 'CSS\n  #square {\n    background: red\n  }',
+    key: 'CSS',
+    output: '#square {\n  background: red\n}'
   });
   run_test({
     use_case: "Let HTML pass through",

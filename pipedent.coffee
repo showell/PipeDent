@@ -144,10 +144,21 @@ convert_widget_package = (s) ->
     if key == 'HTML'
       block_size = IndentationHelper.get_indented_block prefix.length, indented_lines
       block = indented_lines.shift_slice(block_size)
+      IndentationHelper.eat_empty_lines(block)
+      if block.len() > 0
+        buffer = output()
+        html = HTML(buffer.append)
+        html.branch_method(block)
+        obj[key] = buffer.text()
+    else
+      block_size = IndentationHelper.get_indented_block prefix.length, indented_lines
+      block = indented_lines.shift_slice(block_size)
       buffer = output()
-      html = HTML(buffer.append)
-      html.branch_method(block)
+      while block.len() > 0
+        [prefix, line] = block.shift()
+        buffer.append prefix+line
       obj[key] = buffer.text()
+    
 
   parse(s, parser)
   obj

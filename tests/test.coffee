@@ -12,9 +12,18 @@ assert_equal = (expected, actual, msg) ->
     console.warn 'ACTUAL'
     console.warn actual
     for line, i in expected.split("\n")
-      if line != actual.split("\n")[i]
+      actual_line = actual.split("\n")[i]
+      if line != actual_line
         console.log "****", line
+        console.log "----", actual_line
+        console.log ""
     throw "fail"
+
+indent = (s, indent) ->
+  lines = s.split("\n")
+  lines = lines.map (line) ->
+    if line == '' then line else indent + line
+  lines.join("\n")
 
 run_test = (test) ->
   expected = test.output + "\n"
@@ -23,23 +32,43 @@ run_test = (test) ->
   assert_equal expected, actual, msg
 
 run_package_test = (test) ->
-  expected = test.output + "\n"
+  expected = indent(test.output, '  ')
   actual = convert_widget_package(test.input)[test.key]
   msg = "test: #{test.use_case}"
   assert_equal expected, actual, msg
   
 run_package_test
-  use_case: "Basic"
+  use_case: "Basic HTML"
   input: \
     '''
     HTML
       p | hello
+      b | world
     '''
   key: \
     'HTML'
   output: \
     '''
     <p>hello</p>
+    <b>world</b>
+    '''
+
+run_package_test
+  use_case: "Basic CSS"
+  input: \
+    '''
+    CSS
+      #square {
+        background: red
+      }
+    '''
+  key: \
+    'CSS'
+  output: \
+    '''
+    #square {
+      background: red
+    }
     '''
 
 run_test 
