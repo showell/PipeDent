@@ -34,7 +34,7 @@
     var append, line, prefix_lines, recurse;
     append = output.append;
     recurse = function(prefix_lines) {
-      var block, block_size, header, line, prefix, _ref;
+      var block, block_size, header, line, prefix, _ref, _ref2;
       while (prefix_lines.length > 0) {
         _ref = prefix_lines[0], prefix = _ref[0], line = _ref[1];
         if (line === '') {
@@ -44,10 +44,8 @@
         }
         block_size = IndentationHelper.get_indented_block(prefix_lines);
         if (block_size === 1) {
-          prefix_lines.shift();
-          if (line !== "PASS") {
-            append(prefix + leaf_method(line));
-          }
+          _ref2 = prefix_lines.shift(), prefix = _ref2[0], line = _ref2[1];
+          append(prefix + leaf_method(line));
         } else {
           header = prefix_lines[0];
           block = prefix_lines.slice(1, block_size);

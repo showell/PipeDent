@@ -31,8 +31,7 @@
                 <%= @title %>
               </h1>
             </th>
-            <th class="code">
-            </th>
+            <th class="code"></th>
           </tr>
         </thead>
         <tbody>

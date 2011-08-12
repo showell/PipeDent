@@ -36,8 +36,8 @@
   });
   run_test({
     use_case: "Basic Indent",
-    input: 'foo\n  bar\n  | bar\n  <b>html passes thru</b>\n\nyo\n  PASS',
-    output: '<foo>\n  bar\n  bar\n  <b>html passes thru</b>\n</foo>\n\n<yo>\n</yo>'
+    input: 'foo\n  bar\n  | bar\n  <b>html passes thru</b>\n\nyo |',
+    output: '<foo>\n  bar\n  bar\n  <b>html passes thru</b>\n</foo>\n\n<yo></yo>'
   });
   run_test({
     use_case: "Trailing Pipe",

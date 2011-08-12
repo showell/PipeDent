@@ -24,8 +24,7 @@ html
             th class="docs"
               h1
                 <%= @title %>
-            th class="code"
-              PASS
+            th class="code" |
         tbody
           <% for section, i in @sections: %>
             tr id="section-<%= i + 1 %>"

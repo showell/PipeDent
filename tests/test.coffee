@@ -46,8 +46,7 @@ run_test
       | bar
       <b>html passes thru</b>
 
-    yo
-      PASS
+    yo |
     '''
   output: \
     '''
@@ -57,8 +56,7 @@ run_test
       <b>html passes thru</b>
     </foo>
 
-    <yo>
-    </yo>
+    <yo></yo>
     '''
 
 run_test

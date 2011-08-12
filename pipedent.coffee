@@ -34,9 +34,8 @@ indent_lines = (input, output, branch_method, leaf_method) ->
 
       block_size = IndentationHelper.get_indented_block(prefix_lines)
       if block_size == 1
-        prefix_lines.shift()
-        if line != "PASS"
-          append(prefix + leaf_method(line))
+        [prefix, line] = prefix_lines.shift()
+        append(prefix + leaf_method(line))
       else
         header = prefix_lines[0]
         block = prefix_lines[1...block_size]
