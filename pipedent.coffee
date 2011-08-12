@@ -43,26 +43,9 @@ IndentationHelper =
     prefix = '' if line == ''
     return [prefix, line]
 
-indent_lines = (input, branch_method, line_method) ->
-  recurse = (prefix_lines) ->
-    while prefix_lines.len() > 0
-      [prefix, line] = prefix_lines.shift()
-      if line == ''
-        line_method(prefix, line)
-        continue
-      
-      block_size = IndentationHelper.get_indented_block prefix.length, prefix_lines
-      if block_size == 0
-        line_method(prefix, line)
-      else
-        recurse_block = -> 
-          block = prefix_lines.shift_slice(block_size) 
-          recurse(block)
-        branch_method(prefix, line, recurse_block)
-    return
-    
-  prefix_lines = (IndentationHelper.find_indentation(line) for line in input.split('\n'))
-  recurse(ArrayView prefix_lines)
+parse = (s, parser) ->
+  prefix_line_array = (IndentationHelper.find_indentation(line) for line in s.split('\n'))
+  parser(ArrayView prefix_line_array)
 
 HTML = (append) ->
   get_tags = (full_tag) ->
@@ -78,15 +61,30 @@ HTML = (append) ->
   line_method = (prefix, line) ->
     append(prefix + leaf_method(line))
     
-  branch_method = (prefix, line, recurse_block) ->
-    if html_syntax.exec(line)
-      append(prefix + line)
-      recurse_block()
+  branch_method = (prefix_lines) ->
+    if prefix_lines.len() == 0
       return
-    [start_tag, end_tag] = get_tags(line)
-    append(prefix + start_tag)
-    recurse_block()
-    append(prefix + end_tag)
+    [prefix, line] = prefix_lines.shift()
+    if line == ''
+      line_method(prefix, line)
+    else
+      block_size = IndentationHelper.get_indented_block prefix.length, prefix_lines
+      if block_size == 0
+        line_method(prefix, line)
+      else
+        recurse_block = -> 
+          block = prefix_lines.shift_slice(block_size) 
+          branch_method(block)
+       
+        if html_syntax.exec(line)
+          append(prefix + line)
+          recurse_block()
+        else
+          [start_tag, end_tag] = get_tags(line)
+          append(prefix + start_tag)
+          recurse_block()
+          append(prefix + end_tag)
+    branch_method(prefix_lines)
 
   leaf_method = (s) ->
     raw_html =
@@ -126,11 +124,7 @@ output = () ->
 convert = (s) ->  
   buffer = output()
   html = HTML(buffer.append)
-  indent_lines(
-    s, 
-    html.branch_method,
-    html.line_method
-  )
+  parse(s, html.branch_method)
   buffer.text()
 
 if exports?
