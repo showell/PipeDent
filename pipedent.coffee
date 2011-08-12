@@ -138,8 +138,8 @@ convert = (s) ->
 convert_widget_package = (s) ->
   obj = {}
   parser = (indented_lines) ->
+    IndentationHelper.eat_empty_lines(indented_lines)
     while indented_lines.len() > 0
-      IndentationHelper.eat_empty_lines(indented_lines)
       [prefix, line] = indented_lines.shift()
       key = line
       if key == 'HTML'
@@ -159,8 +159,9 @@ convert_widget_package = (s) ->
           [prefix, line] = block.shift()
           buffer.append prefix+line
         obj[key] = buffer.text()
-    
-
+      IndentationHelper.eat_empty_lines(indented_lines)
+    return
+      
   parse(s, parser)
   obj
     

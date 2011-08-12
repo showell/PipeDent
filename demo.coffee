@@ -12,6 +12,7 @@ demo_layout = \
       td
         h1 | Output HTML
         textarea id="output" rows=20 cols=80 |
+        style type="text/css" id="rendered_style" | {}
         h1 | Rendered HTML
         div id="rendered" |
   '''
@@ -45,6 +46,7 @@ update_widgets = (input) ->
   output = convert_widget_package(input)
   $("#output").text(output.HTML)
   $("#rendered").html(output.HTML)
+  $("#rendered_style").html(output.CSS)
         
 $(document).ready ->
   $("#content").html(convert demo_layout)

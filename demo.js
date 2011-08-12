@@ -1,6 +1,6 @@
 (function() {
   var convert, demo_input, demo_layout, my_html_input, update_widgets;
-  demo_layout = 'p\n  | Welcome to the demo.  As you edit the code on the left, it\n  | will convert automatically.\ntable\n  tr valign="top"\n    td\n      h1 | Input\n      textarea id="input" rows=80 cols=80\n        PASS\n    td\n      h1 | Output HTML\n      textarea id="output" rows=20 cols=80 |\n      h1 | Rendered HTML\n      div id="rendered" |';
+  demo_layout = 'p\n  | Welcome to the demo.  As you edit the code on the left, it\n  | will convert automatically.\ntable\n  tr valign="top"\n    td\n      h1 | Input\n      textarea id="input" rows=80 cols=80\n        PASS\n    td\n      h1 | Output HTML\n      textarea id="output" rows=20 cols=80 |\n      style type="text/css" id="rendered_style" | {}\n      h1 | Rendered HTML\n      div id="rendered" |';
   my_html_input = 'HTML\n  <hr>\n  h6 | Simple tables\n  table border=1\n    tr\n      td class="red"\n        NW\n      td\n        NE\n    tr\n      td\n        SW\n      td style="background: lightblue"\n        SE\nCSS\n  .red {\n    background: red\n  }';
   demo_input = my_html_input;
   convert = this.pipedent_convert;
@@ -8,7 +8,8 @@
     var output;
     output = convert_widget_package(input);
     $("#output").text(output.HTML);
-    return $("#rendered").html(output.HTML);
+    $("#rendered").html(output.HTML);
+    return $("#rendered_style").html(output.CSS);
   };
   $(document).ready(function() {
     var last_parsed_text, parse;

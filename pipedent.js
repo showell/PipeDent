@@ -184,37 +184,33 @@
     var obj, parser;
     obj = {};
     parser = function(indented_lines) {
-      var block, block_size, buffer, html, key, line, prefix, _ref, _results;
-      _results = [];
+      var block, block_size, buffer, html, key, line, prefix, _ref, _ref2;
+      IndentationHelper.eat_empty_lines(indented_lines);
       while (indented_lines.len() > 0) {
-        IndentationHelper.eat_empty_lines(indented_lines);
         _ref = indented_lines.shift(), prefix = _ref[0], line = _ref[1];
         key = line;
-        _results.push((function() {
-          var _ref2;
-          if (key === 'HTML') {
-            block_size = IndentationHelper.get_indented_block(prefix.length, indented_lines);
-            block = indented_lines.shift_slice(block_size);
-            IndentationHelper.eat_empty_lines(block);
-            if (block.len() > 0) {
-              buffer = output();
-              html = HTML(buffer.append);
-              html.branch_method(block);
-              return obj[key] = buffer.text();
-            }
-          } else {
-            block_size = IndentationHelper.get_indented_block(prefix.length, indented_lines);
-            block = indented_lines.shift_slice(block_size);
+        if (key === 'HTML') {
+          block_size = IndentationHelper.get_indented_block(prefix.length, indented_lines);
+          block = indented_lines.shift_slice(block_size);
+          IndentationHelper.eat_empty_lines(block);
+          if (block.len() > 0) {
             buffer = output();
-            while (block.len() > 0) {
-              _ref2 = block.shift(), prefix = _ref2[0], line = _ref2[1];
-              buffer.append(prefix + line);
-            }
-            return obj[key] = buffer.text();
+            html = HTML(buffer.append);
+            html.branch_method(block);
+            obj[key] = buffer.text();
           }
-        })());
+        } else {
+          block_size = IndentationHelper.get_indented_block(prefix.length, indented_lines);
+          block = indented_lines.shift_slice(block_size);
+          buffer = output();
+          while (block.len() > 0) {
+            _ref2 = block.shift(), prefix = _ref2[0], line = _ref2[1];
+            buffer.append(prefix + line);
+          }
+          obj[key] = buffer.text();
+        }
+        IndentationHelper.eat_empty_lines(indented_lines);
       }
-      return _results;
     };
     parse(s, parser);
     return obj;
