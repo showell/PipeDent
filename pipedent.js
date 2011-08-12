@@ -33,7 +33,7 @@
   indent_lines = function(input, branch_method, line_method) {
     var line, prefix_lines, recurse;
     recurse = function(prefix_lines) {
-      var block, block_size, header, line, prefix, _ref, _ref2;
+      var block, block_size, header, line, prefix, recurse_block, _ref, _ref2;
       while (prefix_lines.length > 0) {
         _ref = prefix_lines[0], prefix = _ref[0], line = _ref[1];
         if (line === '') {
@@ -48,8 +48,11 @@
         } else {
           header = prefix_lines[0];
           block = prefix_lines.slice(1, block_size);
+          recurse_block = function() {
+            return recurse(block);
+          };
           prefix_lines = prefix_lines.slice(block_size);
-          branch_method(header, block, recurse);
+          branch_method(header, recurse_block);
         }
       }
     };
@@ -81,17 +84,17 @@
     line_method = function(prefix, line) {
       return append(prefix + leaf_method(line));
     };
-    branch_method = function(header, block, recurse) {
+    branch_method = function(header, recurse_block) {
       var end_tag, line, prefix, start_tag, _ref;
       prefix = header[0], line = header[1];
       if (html_syntax.exec(line)) {
         append(prefix + line);
-        recurse(block);
+        recurse_block();
         return;
       }
       _ref = get_tags(line), start_tag = _ref[0], end_tag = _ref[1];
       append(prefix + start_tag);
-      recurse(block);
+      recurse_block();
       return append(prefix + end_tag);
     };
     leaf_method = function(s) {
