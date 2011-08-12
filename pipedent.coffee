@@ -72,8 +72,10 @@ HTML = (append) ->
     append(prefix + leaf_method(line))
     
   parse_to_html = (indented_lines) ->
-    if indented_lines.len() == 0
-      return
+    while indented_lines.len() > 0
+      parse_compound_statement(indented_lines)
+    
+  parse_compound_statement = (indented_lines) ->  
     [prefix, line] = indented_lines.shift()
     if line == ''
       line_method(prefix, line)
@@ -83,16 +85,17 @@ HTML = (append) ->
         line_method(prefix, line)
       else
         block = indented_lines.shift_slice(block_size) 
+        block_method(prefix, line, block)
        
-        if html_syntax.exec(line)
-          append(prefix + line)
-          parse_to_html(block)
-        else
-          [start_tag, end_tag] = get_tags(line)
-          append(prefix + start_tag)
-          parse_to_html(block)
-          append(prefix + end_tag)
-    parse_to_html(indented_lines)
+  block_method = (prefix, line, block) ->
+    if html_syntax.exec(line)
+      append(prefix + line)
+      parse_to_html(block)
+    else
+      [start_tag, end_tag] = get_tags(line)
+      append(prefix + start_tag)
+      parse_to_html(block)
+      append(prefix + end_tag)
 
   leaf_method = (s) ->
     raw_html =

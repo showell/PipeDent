@@ -87,7 +87,7 @@
     return parser(ArrayView(prefix_line_array));
   };
   HTML = function(append) {
-    var enclose_tag, get_tags, html_syntax, leaf_method, line_method, parse_to_html;
+    var block_method, enclose_tag, get_tags, html_syntax, leaf_method, line_method, parse_compound_statement, parse_to_html;
     get_tags = function(full_tag) {
       var tag;
       tag = full_tag.split(' ')[0];
@@ -103,29 +103,39 @@
       return append(prefix + leaf_method(line));
     };
     parse_to_html = function(indented_lines) {
-      var block, block_size, end_tag, line, prefix, start_tag, _ref, _ref2;
-      if (indented_lines.len() === 0) return;
+      var _results;
+      _results = [];
+      while (indented_lines.len() > 0) {
+        _results.push(parse_compound_statement(indented_lines));
+      }
+      return _results;
+    };
+    parse_compound_statement = function(indented_lines) {
+      var block, block_size, line, prefix, _ref;
       _ref = indented_lines.shift(), prefix = _ref[0], line = _ref[1];
       if (line === '') {
-        line_method(prefix, line);
+        return line_method(prefix, line);
       } else {
         block_size = IndentationHelper.get_indented_block(prefix.length, indented_lines);
         if (block_size === 0) {
-          line_method(prefix, line);
+          return line_method(prefix, line);
         } else {
           block = indented_lines.shift_slice(block_size);
-          if (html_syntax.exec(line)) {
-            append(prefix + line);
-            parse_to_html(block);
-          } else {
-            _ref2 = get_tags(line), start_tag = _ref2[0], end_tag = _ref2[1];
-            append(prefix + start_tag);
-            parse_to_html(block);
-            append(prefix + end_tag);
-          }
+          return block_method(prefix, line, block);
         }
       }
-      return parse_to_html(indented_lines);
+    };
+    block_method = function(prefix, line, block) {
+      var end_tag, start_tag, _ref;
+      if (html_syntax.exec(line)) {
+        append(prefix + line);
+        return parse_to_html(block);
+      } else {
+        _ref = get_tags(line), start_tag = _ref[0], end_tag = _ref[1];
+        append(prefix + start_tag);
+        parse_to_html(block);
+        return append(prefix + end_tag);
+      }
     };
     leaf_method = function(s) {
       var empty_closed_tag, m, raw_html, text_enclosing_tag, translation, translations, _i, _len;
