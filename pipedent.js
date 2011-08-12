@@ -1,19 +1,44 @@
 (function() {
-  var HTML, IndentationHelper, convert, indent_lines, output;
+  var ArrayView, HTML, IndentationHelper, convert, indent_lines, output;
+  ArrayView = function(list, first, last) {
+    var index;
+    index = first;
+    return {
+      shift: function() {
+        var obj;
+        obj = list[index];
+        index += 1;
+        return obj;
+      },
+      empty: function() {
+        return index >= last;
+      },
+      peek: function() {
+        return list[index];
+      },
+      len: function() {
+        return last - index;
+      },
+      at: function(offset) {
+        return list[index + offset];
+      },
+      to_array: function() {
+        return list.slice(first, last);
+      }
+    };
+  };
   IndentationHelper = {
     get_indented_block: function(prefix_lines) {
       var i, len_prefix, line, new_prefix, prefix, _ref, _ref2;
-      _ref = prefix_lines[0], prefix = _ref[0], line = _ref[1];
+      _ref = prefix_lines.at(0), prefix = _ref[0], line = _ref[1];
       len_prefix = prefix.length;
       i = 1;
-      while (i < prefix_lines.length) {
-        _ref2 = prefix_lines[i], new_prefix = _ref2[0], line = _ref2[1];
-        if (line && new_prefix.length <= len_prefix) {
-          break;
-        }
+      while (i < prefix_lines.len()) {
+        _ref2 = prefix_lines.at(i), new_prefix = _ref2[0], line = _ref2[1];
+        if (line && new_prefix.length <= len_prefix) break;
         i += 1;
       }
-      while (i - 1 > 0 && prefix_lines[i - 1][1] === '') {
+      while (i - 1 > 0 && prefix_lines.at(i - 1)[1] === '') {
         i -= 1;
       }
       return i;
@@ -24,9 +49,7 @@
       match = re.exec(line);
       prefix = match[1];
       line = match[2];
-      if (line === '') {
-        prefix = '';
-      }
+      if (line === '') prefix = '';
       return [prefix, line];
     }
   };
@@ -41,7 +64,7 @@
           line_method(prefix, line);
           continue;
         }
-        block_size = IndentationHelper.get_indented_block(prefix_lines);
+        block_size = IndentationHelper.get_indented_block(ArrayView(prefix_lines, 0, prefix_lines.length));
         if (block_size === 1) {
           _ref2 = prefix_lines.shift(), prefix = _ref2[0], line = _ref2[1];
           line_method(prefix, line);
@@ -108,9 +131,7 @@
       text_enclosing_tag = {
         syntax: RegExp(/(.*?)\s*\| (.*)/),
         convert: function(m) {
-          if (m[1] === '') {
-            return m[2];
-          }
+          if (m[1] === '') return m[2];
           return enclose_tag(m[1], m[2]);
         }
       };
@@ -124,9 +145,7 @@
       for (_i = 0, _len = translations.length; _i < _len; _i++) {
         translation = translations[_i];
         m = translation.syntax.exec(s);
-        if (m) {
-          return translation.convert(m);
-        }
+        if (m) return translation.convert(m);
       }
       return s;
     };

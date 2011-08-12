@@ -15,9 +15,7 @@
       _ref = expected.split("\n");
       for (i = 0, _len = _ref.length; i < _len; i++) {
         line = _ref[i];
-        if (line !== actual.split("\n")[i]) {
-          console.log("****", line);
-        }
+        if (line !== actual.split("\n")[i]) console.log("****", line);
       }
       throw "fail";
     }

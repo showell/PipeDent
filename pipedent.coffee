@@ -1,16 +1,35 @@
+ArrayView = (list, first, last) ->
+  index = first
+  shift: ->
+    obj = list[index]
+    index += 1
+    obj
+  empty: ->
+    index >= last
+  peek: ->
+    list[index]
+  len: ->
+    last - index
+  at: (offset) ->
+    list[index + offset]
+  to_array: ->
+    # shim
+    list[first...last]
+    
+
 IndentationHelper =
   get_indented_block: (prefix_lines) ->
-      [prefix, line] = prefix_lines[0]
+      [prefix, line] = prefix_lines.at(0)
       len_prefix = prefix.length
       # Find the first nonempty line with len(prefix) <= len(prefix)
       i = 1
-      while i < prefix_lines.length
-          [new_prefix, line] = prefix_lines[i]
+      while i < prefix_lines.len()
+          [new_prefix, line] = prefix_lines.at(i)
           if line and new_prefix.length <= len_prefix
               break
           i += 1
       # Rewind to exclude empty lines
-      while i-1 > 0 and prefix_lines[i-1][1] == ''
+      while i-1 > 0 and prefix_lines.at(i-1)[1] == ''
           i -= 1
       return i
 
@@ -31,7 +50,7 @@ indent_lines = (input, branch_method, line_method) ->
         line_method(prefix, line)
         continue
 
-      block_size = IndentationHelper.get_indented_block(prefix_lines)
+      block_size = IndentationHelper.get_indented_block ArrayView(prefix_lines, 0, prefix_lines.length)
       if block_size == 1
         [prefix, line] = prefix_lines.shift()
         line_method(prefix, line)
