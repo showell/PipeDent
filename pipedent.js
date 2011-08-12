@@ -33,15 +33,15 @@
     };
   };
   IndentationHelper = {
-    get_indented_block: function(len_prefix, prefix_lines) {
+    get_indented_block: function(len_prefix, indented_lines) {
       var i, line, new_prefix, _ref;
       i = 0;
-      while (i < prefix_lines.len()) {
-        _ref = prefix_lines.at(i), new_prefix = _ref[0], line = _ref[1];
+      while (i < indented_lines.len()) {
+        _ref = indented_lines.at(i), new_prefix = _ref[0], line = _ref[1];
         if (line && new_prefix.length <= len_prefix) break;
         i += 1;
       }
-      while (i - 1 >= 0 && prefix_lines.at(i - 1)[1] === '') {
+      while (i - 1 >= 0 && indented_lines.at(i - 1)[1] === '') {
         i -= 1;
       }
       return i;
@@ -86,20 +86,20 @@
     line_method = function(prefix, line) {
       return append(prefix + leaf_method(line));
     };
-    branch_method = function(prefix_lines) {
+    branch_method = function(indented_lines) {
       var block_size, end_tag, line, prefix, recurse_block, start_tag, _ref, _ref2;
-      if (prefix_lines.len() === 0) return;
-      _ref = prefix_lines.shift(), prefix = _ref[0], line = _ref[1];
+      if (indented_lines.len() === 0) return;
+      _ref = indented_lines.shift(), prefix = _ref[0], line = _ref[1];
       if (line === '') {
         line_method(prefix, line);
       } else {
-        block_size = IndentationHelper.get_indented_block(prefix.length, prefix_lines);
+        block_size = IndentationHelper.get_indented_block(prefix.length, indented_lines);
         if (block_size === 0) {
           line_method(prefix, line);
         } else {
           recurse_block = function() {
             var block;
-            block = prefix_lines.shift_slice(block_size);
+            block = indented_lines.shift_slice(block_size);
             return branch_method(block);
           };
           if (html_syntax.exec(line)) {
@@ -113,7 +113,7 @@
           }
         }
       }
-      return branch_method(prefix_lines);
+      return branch_method(indented_lines);
     };
     leaf_method = function(s) {
       var empty_closed_tag, m, raw_html, text_enclosing_tag, translation, translations, _i, _len;

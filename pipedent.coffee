@@ -22,16 +22,16 @@ ArrayView = (list, first, last) ->
     
 
 IndentationHelper =
-  get_indented_block: (len_prefix, prefix_lines) ->
+  get_indented_block: (len_prefix, indented_lines) ->
       # Find how many lines are indented
       i = 0
-      while i < prefix_lines.len()
-          [new_prefix, line] = prefix_lines.at(i)
+      while i < indented_lines.len()
+          [new_prefix, line] = indented_lines.at(i)
           if line and new_prefix.length <= len_prefix
               break
           i += 1
       # Rewind to exclude empty lines
-      while i-1 >= 0 and prefix_lines.at(i-1)[1] == ''
+      while i-1 >= 0 and indented_lines.at(i-1)[1] == ''
           i -= 1
       return i
 
@@ -61,19 +61,19 @@ HTML = (append) ->
   line_method = (prefix, line) ->
     append(prefix + leaf_method(line))
     
-  branch_method = (prefix_lines) ->
-    if prefix_lines.len() == 0
+  branch_method = (indented_lines) ->
+    if indented_lines.len() == 0
       return
-    [prefix, line] = prefix_lines.shift()
+    [prefix, line] = indented_lines.shift()
     if line == ''
       line_method(prefix, line)
     else
-      block_size = IndentationHelper.get_indented_block prefix.length, prefix_lines
+      block_size = IndentationHelper.get_indented_block prefix.length, indented_lines
       if block_size == 0
         line_method(prefix, line)
       else
         recurse_block = -> 
-          block = prefix_lines.shift_slice(block_size) 
+          block = indented_lines.shift_slice(block_size) 
           branch_method(block)
        
         if html_syntax.exec(line)
@@ -84,7 +84,7 @@ HTML = (append) ->
           append(prefix + start_tag)
           recurse_block()
           append(prefix + end_tag)
-    branch_method(prefix_lines)
+    branch_method(indented_lines)
 
   leaf_method = (s) ->
     raw_html =
