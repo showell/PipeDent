@@ -49,6 +49,11 @@
     var actual, expected, msg;
     expected = indent(test.output, '  ');
     actual = convert_widget_package(test.input)[test.key];
+    if (!(actual != null)) {
+      console.log(test.input);
+      console.log(convert_widget_package(test.input));
+      throw "fail";
+    }
     msg = "test: " + test.use_case;
     return assert_equal(expected, actual, msg);
   };
@@ -60,7 +65,7 @@
   });
   run_package_test({
     use_case: "Basic CSS",
-    input: 'CSS\n  #square {\n    background: red\n  }',
+    input: 'HTML\n  whatever\nCSS\n  #square {\n    background: red\n  }',
     key: 'CSS',
     output: '#square {\n  background: red\n}'
   });

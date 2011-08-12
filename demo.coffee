@@ -19,34 +19,45 @@ demo_layout = \
 my_html_input = \
   '''
   HTML
+    <hr>
+    h6 | Simple tables
     table border=1
       tr
-        td | NW
-        td | NE
+        td class="red"
+          NW
+        td
+          NE
       tr
-        td | SW
-        td style="background: lightblue"| SE
+        td
+          SW
+        td style="background: lightblue"
+          SE
+  CSS
+    .red {
+      background: red
+    }
   '''
 
 demo_input = my_html_input
 convert = this.pipedent_convert
   
+update_widgets = (input) ->
+  output = convert_widget_package(input)
+  $("#output").text(output.HTML)
+  $("#rendered").html(output.HTML)
+        
 $(document).ready ->
   $("#content").html(convert demo_layout)
-  demo_output = convert(demo_input)  
   $("#input").tabby {tabString: "  "};
   $("#input").text(demo_input)
-  $("#output").text(demo_output)
-  $("#rendered").html(demo_output)
   last_parsed_text = demo_input
+  update_widgets(demo_input)
   # This is a crude mechanism to continually parse
   # the input.
   parse = ->
     input = $("#input").val()
     if input != last_parsed_text
-      output = convert_widget_package(input)
-      $("#output").text(output.HTML)
-      $("#rendered").html(output.HTML)
+      update_widgets(input)
       last_parsed_text = input
     setTimeout parse, 200
   setTimeout parse, 200

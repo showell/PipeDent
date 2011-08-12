@@ -34,6 +34,10 @@ run_test = (test) ->
 run_package_test = (test) ->
   expected = indent(test.output, '  ')
   actual = convert_widget_package(test.input)[test.key]
+  if !actual?
+    console.log test.input
+    console.log convert_widget_package(test.input)
+    throw "fail"    
   msg = "test: #{test.use_case}"
   assert_equal expected, actual, msg
   
@@ -57,6 +61,8 @@ run_package_test
   use_case: "Basic CSS"
   input: \
     '''
+    HTML
+      whatever
     CSS
       #square {
         background: red
