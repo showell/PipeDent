@@ -72,17 +72,15 @@ HTML = (append) ->
       if block_size == 0
         line_method(prefix, line)
       else
-        recurse_block = -> 
-          block = indented_lines.shift_slice(block_size) 
-          branch_method(block)
+        block = indented_lines.shift_slice(block_size) 
        
         if html_syntax.exec(line)
           append(prefix + line)
-          recurse_block()
+          branch_method(block)
         else
           [start_tag, end_tag] = get_tags(line)
           append(prefix + start_tag)
-          recurse_block()
+          branch_method(block)
           append(prefix + end_tag)
     branch_method(indented_lines)
 

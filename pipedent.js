@@ -87,7 +87,7 @@
       return append(prefix + leaf_method(line));
     };
     branch_method = function(indented_lines) {
-      var block_size, end_tag, line, prefix, recurse_block, start_tag, _ref, _ref2;
+      var block, block_size, end_tag, line, prefix, start_tag, _ref, _ref2;
       if (indented_lines.len() === 0) return;
       _ref = indented_lines.shift(), prefix = _ref[0], line = _ref[1];
       if (line === '') {
@@ -97,18 +97,14 @@
         if (block_size === 0) {
           line_method(prefix, line);
         } else {
-          recurse_block = function() {
-            var block;
-            block = indented_lines.shift_slice(block_size);
-            return branch_method(block);
-          };
+          block = indented_lines.shift_slice(block_size);
           if (html_syntax.exec(line)) {
             append(prefix + line);
-            recurse_block();
+            branch_method(block);
           } else {
             _ref2 = get_tags(line), start_tag = _ref2[0], end_tag = _ref2[1];
             append(prefix + start_tag);
-            recurse_block();
+            branch_method(block);
             append(prefix + end_tag);
           }
         }
