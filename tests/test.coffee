@@ -1,7 +1,8 @@
 pipedent = require "../pipedent"
 fs = require 'fs'
 convert = pipedent.convert
-
+convert_widget_package = pipedent.convert_widget_package
+ 
 assert_equal = (expected, actual, msg) ->
   if expected.trim() != actual.trim()
     console.warn msg
@@ -20,6 +21,26 @@ run_test = (test) ->
   actual = convert(test.input)
   msg = "test: #{test.use_case}"
   assert_equal expected, actual, msg
+
+run_package_test = (test) ->
+  expected = test.output + "\n"
+  actual = convert_widget_package(test.input)[test.key]
+  msg = "test: #{test.use_case}"
+  assert_equal expected, actual, msg
+  
+run_package_test
+  use_case: "Basic"
+  input: \
+    '''
+    HTML:
+      p | hello
+    '''
+  key: \
+    'HTML:'
+  output: \
+    '''
+    <p>hello</p>
+    '''
 
 run_test 
   use_case: "Let HTML pass through"

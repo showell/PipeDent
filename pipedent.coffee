@@ -2,26 +2,36 @@ ArrayView = (list, first, last) ->
   first = 0 unless first?
   last = list.length unless last?
   index = first
-  shift: ->
-    obj = list[index]
-    index += 1
-    obj
-  peek: ->
-    list[index]
-  len: ->
-    last - index
-  at: (offset) ->
-    list[index + offset]
-  to_array: ->
-    # shim
-    list[first...last]
-  shift_slice: (how_many) ->
-    view = ArrayView(list, index, index + how_many)
-    index += how_many
-    view
-    
+  self =
+    shift: ->
+      obj = list[index]
+      index += 1
+      obj
+    peek: ->
+      list[index]
+    len: ->
+      last - index
+    at: (offset) ->
+      list[index + offset]
+    to_array: ->
+      # shim
+      list[first...last]
+    shift_slice: (how_many) ->
+      view = ArrayView(list, index, index + how_many)
+      index += how_many
+      view
+    shift_while: (f) ->
+      while self.len() > 0
+        return if !f(self.peek())
+        self.shift()
+  
 
 IndentationHelper =
+  eat_empty_lines: (indented_lines) ->
+    indented_lines.shift_while (elem) ->
+      [prefix, line] = elem
+      line == ''
+
   get_indented_block: (len_prefix, indented_lines) ->
       # Find how many lines are indented
       i = 0
@@ -125,9 +135,28 @@ convert = (s) ->
   parse(s, html.branch_method)
   buffer.text()
 
+convert_widget_package = (s) ->
+  obj = {}
+  parser = (indented_lines) ->
+    IndentationHelper.eat_empty_lines(indented_lines)
+    [prefix, line] = indented_lines.shift()
+    key = line
+    if key == 'HTML:'
+      block_size = IndentationHelper.get_indented_block prefix.length, indented_lines
+      block = indented_lines.shift_slice(block_size)
+      buffer = output()
+      html = HTML(buffer.append)
+      html.branch_method(block)
+      obj[key] = buffer.text()
+
+  parse(s, parser)
+  obj
+    
+
 if exports?
   # node.js has require mechanism
   exports.convert = convert
+  exports.convert_widget_package = convert_widget_package
 else
   # in browser use a more unique name
   this.pipedent_convert = convert

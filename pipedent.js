@@ -1,11 +1,11 @@
 (function() {
-  var ArrayView, HTML, IndentationHelper, convert, output, parse;
+  var ArrayView, HTML, IndentationHelper, convert, convert_widget_package, output, parse;
   ArrayView = function(list, first, last) {
-    var index;
+    var index, self;
     if (first == null) first = 0;
     if (last == null) last = list.length;
     index = first;
-    return {
+    return self = {
       shift: function() {
         var obj;
         obj = list[index];
@@ -29,10 +29,26 @@
         view = ArrayView(list, index, index + how_many);
         index += how_many;
         return view;
+      },
+      shift_while: function(f) {
+        var _results;
+        _results = [];
+        while (self.len() > 0) {
+          if (!f(self.peek())) return;
+          _results.push(self.shift());
+        }
+        return _results;
       }
     };
   };
   IndentationHelper = {
+    eat_empty_lines: function(indented_lines) {
+      return indented_lines.shift_while(function(elem) {
+        var line, prefix;
+        prefix = elem[0], line = elem[1];
+        return line === '';
+      });
+    },
     get_indented_block: function(len_prefix, indented_lines) {
       var i, line, new_prefix, _ref;
       i = 0;
@@ -164,8 +180,29 @@
     parse(s, html.branch_method);
     return buffer.text();
   };
+  convert_widget_package = function(s) {
+    var obj, parser;
+    obj = {};
+    parser = function(indented_lines) {
+      var block, block_size, buffer, html, key, line, prefix, _ref;
+      IndentationHelper.eat_empty_lines(indented_lines);
+      _ref = indented_lines.shift(), prefix = _ref[0], line = _ref[1];
+      key = line;
+      if (key === 'HTML:') {
+        block_size = IndentationHelper.get_indented_block(prefix.length, indented_lines);
+        block = indented_lines.shift_slice(block_size);
+        buffer = output();
+        html = HTML(buffer.append);
+        html.branch_method(block);
+        return obj[key] = buffer.text();
+      }
+    };
+    parse(s, parser);
+    return obj;
+  };
   if (typeof exports !== "undefined" && exports !== null) {
     exports.convert = convert;
+    exports.convert_widget_package = convert_widget_package;
   } else {
     this.pipedent_convert = convert;
   }

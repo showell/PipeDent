@@ -1,8 +1,9 @@
 (function() {
-  var assert_equal, convert, fs, pipedent, run_test;
+  var assert_equal, convert, convert_widget_package, fs, pipedent, run_package_test, run_test;
   pipedent = require("../pipedent");
   fs = require('fs');
   convert = pipedent.convert;
+  convert_widget_package = pipedent.convert_widget_package;
   assert_equal = function(expected, actual, msg) {
     var i, line, _len, _ref;
     if (expected.trim() !== actual.trim()) {
@@ -27,6 +28,19 @@
     msg = "test: " + test.use_case;
     return assert_equal(expected, actual, msg);
   };
+  run_package_test = function(test) {
+    var actual, expected, msg;
+    expected = test.output + "\n";
+    actual = convert_widget_package(test.input)[test.key];
+    msg = "test: " + test.use_case;
+    return assert_equal(expected, actual, msg);
+  };
+  run_package_test({
+    use_case: "Basic",
+    input: 'HTML:\n  p | hello',
+    key: 'HTML:',
+    output: '<p>hello</p>'
+  });
   run_test({
     use_case: "Let HTML pass through",
     input: '<div>\n  <h2>foo</h2>\n</div>',
