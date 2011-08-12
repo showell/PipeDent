@@ -37,8 +37,8 @@
   };
   run_package_test({
     use_case: "Basic",
-    input: 'HTML:\n  p | hello',
-    key: 'HTML:',
+    input: 'HTML\n  p | hello',
+    key: 'HTML',
     output: '<p>hello</p>'
   });
   run_test({

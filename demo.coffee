@@ -11,22 +11,21 @@ demo_layout = \
           PASS
       td
         h1 | Output HTML
-        textarea id="output" rows=20 cols=80
-          PASS
+        textarea id="output" rows=20 cols=80 |
         h1 | Rendered HTML
-        div id="rendered"
-          PASS
+        div id="rendered" |
   '''
 
 my_html_input = \
   '''
-  table border=1
-    tr
-      td | "NW"
-      td | "NE"
-    tr
-      td | "SW"
-      td | "SE"
+  HTML
+    table border=1
+      tr
+        td | NW
+        td | NE
+      tr
+        td | SW
+        td style="background: lightblue"| SE
   '''
 
 demo_input = my_html_input
@@ -45,9 +44,9 @@ $(document).ready ->
   parse = ->
     input = $("#input").val()
     if input != last_parsed_text
-      output = convert(input)
-      $("#output").text(output)
-      $("#rendered").html(output)
+      output = convert_widget_package(input)
+      $("#output").text(output.HTML)
+      $("#rendered").html(output.HTML)
       last_parsed_text = input
     setTimeout parse, 200
   setTimeout parse, 200

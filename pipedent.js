@@ -188,7 +188,7 @@
       IndentationHelper.eat_empty_lines(indented_lines);
       _ref = indented_lines.shift(), prefix = _ref[0], line = _ref[1];
       key = line;
-      if (key === 'HTML:') {
+      if (key === 'HTML') {
         block_size = IndentationHelper.get_indented_block(prefix.length, indented_lines);
         block = indented_lines.shift_slice(block_size);
         buffer = output();
@@ -205,5 +205,6 @@
     exports.convert_widget_package = convert_widget_package;
   } else {
     this.pipedent_convert = convert;
+    this.convert_widget_package = convert_widget_package;
   }
 }).call(this);

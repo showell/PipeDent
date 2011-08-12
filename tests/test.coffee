@@ -32,11 +32,11 @@ run_package_test
   use_case: "Basic"
   input: \
     '''
-    HTML:
+    HTML
       p | hello
     '''
   key: \
-    'HTML:'
+    'HTML'
   output: \
     '''
     <p>hello</p>
