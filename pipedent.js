@@ -1,32 +1,34 @@
 (function() {
-  var HTML, convert, find_indentation, get_indented_block, indent_lines, output;
-  get_indented_block = function(prefix_lines) {
-    var i, len_prefix, line, new_prefix, prefix, _ref, _ref2;
-    _ref = prefix_lines[0], prefix = _ref[0], line = _ref[1];
-    len_prefix = prefix.length;
-    i = 1;
-    while (i < prefix_lines.length) {
-      _ref2 = prefix_lines[i], new_prefix = _ref2[0], line = _ref2[1];
-      if (line && new_prefix.length <= len_prefix) {
-        break;
+  var HTML, IndentationHelper, convert, indent_lines, output;
+  IndentationHelper = {
+    get_indented_block: function(prefix_lines) {
+      var i, len_prefix, line, new_prefix, prefix, _ref, _ref2;
+      _ref = prefix_lines[0], prefix = _ref[0], line = _ref[1];
+      len_prefix = prefix.length;
+      i = 1;
+      while (i < prefix_lines.length) {
+        _ref2 = prefix_lines[i], new_prefix = _ref2[0], line = _ref2[1];
+        if (line && new_prefix.length <= len_prefix) {
+          break;
+        }
+        i += 1;
       }
-      i += 1;
+      while (i - 1 > 0 && prefix_lines[i - 1][1] === '') {
+        i -= 1;
+      }
+      return i;
+    },
+    find_indentation: function(line) {
+      var match, prefix, re;
+      re = RegExp('( *)(.*)');
+      match = re.exec(line);
+      prefix = match[1];
+      line = match[2];
+      if (line === '') {
+        prefix = '';
+      }
+      return [prefix, line];
     }
-    while (i - 1 > 0 && prefix_lines[i - 1][1] === '') {
-      i -= 1;
-    }
-    return i;
-  };
-  find_indentation = function(line) {
-    var match, prefix, re;
-    re = RegExp('( *)(.*)');
-    match = re.exec(line);
-    prefix = match[1];
-    line = match[2];
-    if (line === '') {
-      prefix = '';
-    }
-    return [prefix, line];
   };
   indent_lines = function(input, output, branch_method, leaf_method) {
     var append, line, prefix_lines, recurse;
@@ -40,7 +42,7 @@
           append('');
           continue;
         }
-        block_size = get_indented_block(prefix_lines);
+        block_size = IndentationHelper.get_indented_block(prefix_lines);
         if (block_size === 1) {
           prefix_lines.shift();
           if (line !== "PASS") {
@@ -59,7 +61,7 @@
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         line = _ref[_i];
-        _results.push(find_indentation(line));
+        _results.push(IndentationHelper.find_indentation(line));
       }
       return _results;
     })();
