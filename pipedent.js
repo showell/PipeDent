@@ -30,27 +30,26 @@
       return [prefix, line];
     }
   };
-  indent_lines = function(input, output, branch_method, leaf_method) {
-    var append, line, prefix_lines, recurse;
-    append = output.append;
+  indent_lines = function(input, branch_method, line_method) {
+    var line, prefix_lines, recurse;
     recurse = function(prefix_lines) {
       var block, block_size, header, line, prefix, _ref, _ref2;
       while (prefix_lines.length > 0) {
         _ref = prefix_lines[0], prefix = _ref[0], line = _ref[1];
         if (line === '') {
           prefix_lines.shift();
-          append('');
+          line_method(prefix, line);
           continue;
         }
         block_size = IndentationHelper.get_indented_block(prefix_lines);
         if (block_size === 1) {
           _ref2 = prefix_lines.shift(), prefix = _ref2[0], line = _ref2[1];
-          append(prefix + leaf_method(line));
+          line_method(prefix, line);
         } else {
           header = prefix_lines[0];
           block = prefix_lines.slice(1, block_size);
           prefix_lines = prefix_lines.slice(block_size);
-          branch_method(output, header, block, recurse);
+          branch_method(header, block, recurse);
         }
       }
     };
@@ -66,8 +65,8 @@
     })();
     return recurse(prefix_lines);
   };
-  HTML = function() {
-    var branch_method, enclose_tag, get_tags, html_syntax, leaf_method;
+  HTML = function(append) {
+    var branch_method, enclose_tag, get_tags, html_syntax, leaf_method, line_method;
     get_tags = function(full_tag) {
       var tag;
       tag = full_tag.split(' ')[0];
@@ -79,18 +78,21 @@
       return start_tag + text + end_tag;
     };
     html_syntax = RegExp(/(^\<.*)/);
-    branch_method = function(output, header, block, recurse) {
+    line_method = function(prefix, line) {
+      return append(prefix + leaf_method(line));
+    };
+    branch_method = function(header, block, recurse) {
       var end_tag, line, prefix, start_tag, _ref;
       prefix = header[0], line = header[1];
       if (html_syntax.exec(line)) {
-        output.append(prefix + line);
+        append(prefix + line);
         recurse(block);
         return;
       }
       _ref = get_tags(line), start_tag = _ref[0], end_tag = _ref[1];
-      output.append(prefix + start_tag);
+      append(prefix + start_tag);
       recurse(block);
-      return output.append(prefix + end_tag);
+      return append(prefix + end_tag);
     };
     leaf_method = function(s) {
       var empty_closed_tag, m, raw_html, text_enclosing_tag, translation, translations, _i, _len;
@@ -127,7 +129,7 @@
     };
     return {
       branch_method: branch_method,
-      leaf_method: leaf_method
+      line_method: line_method
     };
   };
   output = function() {
@@ -145,8 +147,8 @@
   convert = function(s) {
     var buffer, html;
     buffer = output();
-    html = HTML();
-    indent_lines(s, buffer, html.branch_method, html.leaf_method);
+    html = HTML(buffer.append);
+    indent_lines(s, html.branch_method, html.line_method);
     return buffer.text();
   };
   if (typeof exports !== "undefined" && exports !== null) {

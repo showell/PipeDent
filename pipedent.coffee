@@ -22,31 +22,30 @@ IndentationHelper =
     prefix = '' if line == ''
     return [prefix, line]
 
-indent_lines = (input, output, branch_method, leaf_method) ->
-  append = output.append
+indent_lines = (input, branch_method, line_method) ->
   recurse = (prefix_lines) ->
     while prefix_lines.length > 0
       [prefix, line] = prefix_lines[0]
       if line == ''
         prefix_lines.shift()
-        append('')
+        line_method(prefix, line)
         continue
 
       block_size = IndentationHelper.get_indented_block(prefix_lines)
       if block_size == 1
         [prefix, line] = prefix_lines.shift()
-        append(prefix + leaf_method(line))
+        line_method(prefix, line)
       else
         header = prefix_lines[0]
         block = prefix_lines[1...block_size]
         prefix_lines = prefix_lines[block_size..-1]
-        branch_method(output, header, block, recurse)
+        branch_method(header, block, recurse)
     return
     
   prefix_lines = (IndentationHelper.find_indentation(line) for line in input.split('\n'))
   recurse(prefix_lines)
 
-HTML = ->
+HTML = (append) ->
   get_tags = (full_tag) ->
     tag = full_tag.split(' ')[0]
     ["<#{full_tag}>", "</#{tag}>"]
@@ -57,16 +56,19 @@ HTML = ->
 
   html_syntax = RegExp /(^\<.*)/
 
-  branch_method = (output, header, block, recurse) ->
+  line_method = (prefix, line) ->
+    append(prefix + leaf_method(line))
+    
+  branch_method = (header, block, recurse) ->
     [prefix, line] = header
     if html_syntax.exec(line)
-      output.append(prefix + line)
+      append(prefix + line)
       recurse(block)
       return
     [start_tag, end_tag] = get_tags(line)
-    output.append(prefix + start_tag)
+    append(prefix + start_tag)
     recurse(block)
-    output.append(prefix + end_tag)
+    append(prefix + end_tag)
 
   leaf_method = (s) ->
     raw_html =
@@ -93,7 +95,7 @@ HTML = ->
     s
     
   branch_method: branch_method
-  leaf_method: leaf_method
+  line_method: line_method
 
 output = () ->
   s = ''
@@ -105,12 +107,11 @@ output = () ->
 
 convert = (s) ->  
   buffer = output()
-  html = HTML()
+  html = HTML(buffer.append)
   indent_lines(
     s, 
-    buffer,
     html.branch_method,
-    html.leaf_method
+    html.line_method
   )
   buffer.text()
 
