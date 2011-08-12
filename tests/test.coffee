@@ -62,6 +62,15 @@ run_test
     '''
 
 run_test
+  use_case: "Trailing Pipe"
+  input: '''
+    div id="yo" |
+    '''
+  output: '''
+    <div id="yo"></div>
+    '''
+
+run_test
   use_case: "Pipes"
   input: \
     '''

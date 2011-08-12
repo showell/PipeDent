@@ -4,13 +4,21 @@
   fs = require('fs');
   convert = pipedent.convert;
   assert_equal = function(expected, actual, msg) {
-    if (expected !== actual) {
+    var i, line, _len, _ref;
+    if (expected.trim() !== actual.trim()) {
       console.warn(msg);
       console.warn('=====');
       console.warn("EXPECTED");
       console.warn(expected);
       console.warn('ACTUAL');
       console.warn(actual);
+      _ref = expected.split("\n");
+      for (i = 0, _len = _ref.length; i < _len; i++) {
+        line = _ref[i];
+        if (line !== actual.split("\n")[i]) {
+          console.log("****", line);
+        }
+      }
       throw "fail";
     }
   };
@@ -30,6 +38,11 @@
     use_case: "Basic Indent",
     input: 'foo\n  bar\n  | bar\n  <b>html passes thru</b>\n\nyo\n  PASS',
     output: '<foo>\n  bar\n  bar\n  <b>html passes thru</b>\n</foo>\n\n<yo>\n</yo>'
+  });
+  run_test({
+    use_case: "Trailing Pipe",
+    input: 'div id="yo" |',
+    output: '<div id="yo"></div>'
   });
   run_test({
     use_case: "Pipes",

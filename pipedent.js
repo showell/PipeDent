@@ -25,7 +25,7 @@
     return output.append(prefix + end_tag);
   };
   leaf_method = function(s) {
-    var m, raw_html, text_enclosing_tag, translation, translations, _i, _len;
+    var empty_closed_tag, m, raw_html, text_enclosing_tag, translation, translations, _i, _len;
     raw_html = {
       syntax: html_syntax,
       convert: function(m) {
@@ -41,7 +41,13 @@
         return enclose_tag(m[1], m[2]);
       }
     };
-    translations = [raw_html, text_enclosing_tag];
+    empty_closed_tag = {
+      syntax: RegExp(/(.+?)\s*\|$/),
+      convert: function(m) {
+        return enclose_tag(m[1], '');
+      }
+    };
+    translations = [raw_html, text_enclosing_tag, empty_closed_tag];
     for (_i = 0, _len = translations.length; _i < _len; _i++) {
       translation = translations[_i];
       m = translation.syntax.exec(s);

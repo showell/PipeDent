@@ -28,9 +28,14 @@ leaf_method = (s) ->
     convert: (m) -> 
       return m[2] if m[1] == ''
       enclose_tag(m[1], m[2])
+  empty_closed_tag =
+    syntax: RegExp /(.+?)\s*\|$/
+    convert: (m) ->
+      enclose_tag(m[1], '')
   translations = [
     raw_html,
-    text_enclosing_tag
+    text_enclosing_tag,
+    empty_closed_tag
   ]
   
   for translation in translations
