@@ -3,13 +3,16 @@ fs = require 'fs'
 convert = pipedent.convert
 
 assert_equal = (expected, actual, msg) ->
-  if expected != actual
+  if expected.trim() != actual.trim()
     console.warn msg
     console.warn '====='
     console.warn "EXPECTED"
     console.warn expected
     console.warn 'ACTUAL'
     console.warn actual
+    for line, i in expected.split("\n")
+      if line != actual.split("\n")[i]
+        console.log "****", line
     throw "fail"
 
 run_test = (test) ->
