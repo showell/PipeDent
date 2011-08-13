@@ -28,5 +28,10 @@ this.widget_collection =
     code: \
       '''
       HTML
-        iframe width="425" height="349" src="http://www.youtube.com/embed/J---aiyznGQ?rel=0" frameborder="0" allowfullscreen |
+        iframe id="cat" src="http://bit.ly/rnRblF" allowfullscreen |
+      CSS
+        #cat {
+          width: 425;
+          height: 349;
+        }
       '''

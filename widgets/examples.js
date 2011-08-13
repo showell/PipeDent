@@ -6,7 +6,7 @@
     },
     keyboard_cat: {
       description: "Keyboard Cat!",
-      code: 'HTML\n  iframe width="425" height="349" src="http://www.youtube.com/embed/J---aiyznGQ?rel=0" frameborder="0" allowfullscreen |'
+      code: 'HTML\n  iframe id="cat" src="http://bit.ly/rnRblF" allowfullscreen |\nCSS\n  #cat {\n    width: 425;\n    height: 349;\n  }'
     }
   };
 }).call(this);
