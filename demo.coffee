@@ -8,8 +8,7 @@ demo_layout = \
           | Welcome to the demo.  As you edit the code below, it
           | will convert automatically.        
         h2 | Input
-        textarea id="input" rows=80 cols=80
-          PASS
+        textarea id="input_code" rows=80 cols=80 |
       td
         h2 | Output HTML
         pre id="output" |
@@ -51,8 +50,8 @@ $(document).ready ->
   
   format_intro()
   
-  $("#input").tabby {tabString: "  "};
-  $("#input").text(demo_input)
+  $("#input_code").tabby {tabString: "  "};
+  $("#input_code").text(demo_input)
   last_parsed_text = demo_input
   update_widgets(demo_input)
   user_engaged = false
@@ -60,7 +59,7 @@ $(document).ready ->
   # This is a crude mechanism to continually parse
   # the input.
   parse = ->
-    input = $("#input").val()
+    input = $("#input_code").val()
     if input != last_parsed_text
       num_user_changes += 1
       update_widgets(input)
