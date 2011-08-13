@@ -1,6 +1,6 @@
 (function() {
   var convert, demo_input, demo_layout, format_intro, my_html_input, num_user_changes, update_widgets;
-  demo_layout = 'p id="intro"\n  | Welcome to the demo.  As you edit the code on the left, it\n  | will convert automatically.\ntable\n  tr valign="top"\n    td\n      h2 | Input\n      textarea id="input" rows=80 cols=80\n        PASS\n    td\n      h2 | Output HTML\n      textarea id="output" rows=20 cols=80 |\n      style type="text/css" id="rendered_style" | {}\n      h4 | Rendered HTML\n      div id="rendered" |';
+  demo_layout = '\ntable\n  tr valign="top"\n    td\n      p id="intro"\n        | Welcome to the demo.  As you edit the code below, it\n        | will convert automatically.        \n      h2 | Input\n      textarea id="input" rows=80 cols=80\n        PASS\n    td\n      h2 | Output HTML\n      pre id="output" |\n      style type="text/css" id="rendered_style" | {}\n      h4 | Rendered HTML\n      div id="rendered" |';
   my_html_input = widget_collection.basic_tables.code;
   demo_input = my_html_input;
   convert = this.pipedent_convert;
@@ -9,11 +9,12 @@
     var e, hide_if_user_changes;
     e = $("#intro");
     e.css("font-weight", "bold");
-    e.css("font-size", "30px");
+    e.css("font-size", "20px");
     e.css("background-color", "lightgreen");
+    e.css("width", "450px");
     hide_if_user_changes = function() {
-      if (num_user_changes > 10) {
-        return e.slideUp(3000);
+      if (num_user_changes > 5) {
+        return e.fadeOut(1000);
       } else {
         return setTimeout(hide_if_user_changes, 2000);
       }

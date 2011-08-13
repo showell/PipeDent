@@ -1,17 +1,18 @@
 demo_layout = \
   '''
-  p id="intro"
-    | Welcome to the demo.  As you edit the code on the left, it
-    | will convert automatically.
+
   table
     tr valign="top"
       td
+        p id="intro"
+          | Welcome to the demo.  As you edit the code below, it
+          | will convert automatically.        
         h2 | Input
         textarea id="input" rows=80 cols=80
           PASS
       td
         h2 | Output HTML
-        textarea id="output" rows=20 cols=80 |
+        pre id="output" |
         style type="text/css" id="rendered_style" | {}
         h4 | Rendered HTML
         div id="rendered" |
@@ -27,11 +28,12 @@ num_user_changes = 0
 format_intro = ->
   e = $("#intro")
   e.css("font-weight", "bold")
-  e.css("font-size", "30px")
+  e.css("font-size", "20px")
   e.css("background-color", "lightgreen")
+  e.css("width", "450px")
   hide_if_user_changes = ->
-    if num_user_changes > 10
-      e.slideUp(3000)
+    if num_user_changes > 5
+      e.fadeOut(1000)
     else
       setTimeout(hide_if_user_changes, 2000)
   setTimeout(hide_if_user_changes, 2000)
