@@ -2,8 +2,12 @@
   var ArrayView, HTML, IndentationHelper, convert, convert_widget_package, output, parse;
   ArrayView = function(list, first, last) {
     var index, self;
-    if (first == null) first = 0;
-    if (last == null) last = list.length;
+    if (first == null) {
+      first = 0;
+    }
+    if (last == null) {
+      last = list.length;
+    }
     index = first;
     return self = {
       shift: function() {
@@ -34,7 +38,9 @@
         var _results;
         _results = [];
         while (self.len() > 0) {
-          if (!f(self.peek())) return;
+          if (!f(self.peek())) {
+            return;
+          }
           _results.push(self.shift());
         }
         return _results;
@@ -54,7 +60,9 @@
       i = 0;
       while (i < indented_lines.len()) {
         _ref = indented_lines.at(i), new_prefix = _ref[0], line = _ref[1];
-        if (line && new_prefix.length <= len_prefix) break;
+        if (line && new_prefix.length <= len_prefix) {
+          break;
+        }
         i += 1;
       }
       while (i - 1 >= 0 && indented_lines.at(i - 1)[1] === '') {
@@ -68,7 +76,9 @@
       match = re.exec(line);
       prefix = match[1];
       line = match[2];
-      if (line === '') prefix = '';
+      if (line === '') {
+        prefix = '';
+      }
       return [prefix, line];
     }
   };
@@ -148,7 +158,9 @@
       text_enclosing_tag = {
         syntax: RegExp(/(.*?)\s*\| (.*)/),
         convert: function(m) {
-          if (m[1] === '') return m[2];
+          if (m[1] === '') {
+            return m[2];
+          }
           return enclose_tag(m[1], m[2]);
         }
       };
@@ -162,7 +174,9 @@
       for (_i = 0, _len = translations.length; _i < _len; _i++) {
         translation = translations[_i];
         m = translation.syntax.exec(s);
-        if (m) return translation.convert(m);
+        if (m) {
+          return translation.convert(m);
+        }
       }
       return s;
     };

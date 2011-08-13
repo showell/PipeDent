@@ -1,16 +1,16 @@
 demo_layout = \
   '''
-  p
+  p id="intro"
     | Welcome to the demo.  As you edit the code on the left, it
     | will convert automatically.
   table
     tr valign="top"
       td
-        h1 | Input
+        h2 | Input
         textarea id="input" rows=80 cols=80
           PASS
       td
-        h1 | Output HTML
+        h2 | Output HTML
         textarea id="output" rows=20 cols=80 |
         style type="text/css" id="rendered_style" | {}
         h4 | Rendered HTML
@@ -22,6 +22,12 @@ my_html_input = widget_collection.basic_tables.code
 demo_input = my_html_input
 convert = this.pipedent_convert
   
+format_intro = ->
+  e = $("#intro")
+  e.css("font-weight", "bold")
+  e.css("font-size", "30px")
+  e.css("background-color", "lightgreen")
+  
 update_widgets = (input) ->
   output = convert_widget_package(input)
   $("#output").text(output.HTML)
@@ -29,7 +35,12 @@ update_widgets = (input) ->
   $("#rendered_style").html(output.CSS)
         
 $(document).ready ->
+  $("#intro").css("font-weight", "bold")
+  
   $("#content").html(convert demo_layout)
+  
+  format_intro()
+  
   $("#input").tabby {tabString: "  "};
   $("#input").text(demo_input)
   last_parsed_text = demo_input
