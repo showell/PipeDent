@@ -22,3 +22,11 @@ this.widget_collection =
           background: red
         }
       '''
+      
+  keyboard_cat:
+    description: "Keyboard Cat!"
+    code: \
+      '''
+      HTML
+        iframe width="425" height="349" src="http://www.youtube.com/embed/J---aiyznGQ?rel=0" frameborder="0" allowfullscreen |
+      '''

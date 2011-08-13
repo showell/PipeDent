@@ -18,7 +18,7 @@ demo_layout = \
         div id="rendered" |
   '''
 
-my_html_input = widget_collection.basic_tables.code
+my_html_input = widget_collection.keyboard_cat.code
 
 demo_input = my_html_input
 convert = this.pipedent_convert

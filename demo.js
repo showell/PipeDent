@@ -1,7 +1,7 @@
 (function() {
   var convert, demo_input, demo_layout, format_intro, my_html_input, num_user_changes, update_widgets;
   demo_layout = '\ntable\n  tr valign="top"\n    td\n      p id="intro"\n        | Welcome to the demo.  As you edit the code below, it\n        | will convert automatically.        \n      h2 | Input\n      textarea id="input" rows=80 cols=80\n        PASS\n    td\n      h2 | Output HTML\n      pre id="output" |\n      style type="text/css" id="rendered_style" | {}\n      h4 | Rendered HTML\n      div id="rendered" |';
-  my_html_input = widget_collection.basic_tables.code;
+  my_html_input = widget_collection.keyboard_cat.code;
   demo_input = my_html_input;
   convert = this.pipedent_convert;
   num_user_changes = 0;
