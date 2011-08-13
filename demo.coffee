@@ -13,7 +13,7 @@ demo_layout = \
         h1 | Output HTML
         textarea id="output" rows=20 cols=80 |
         style type="text/css" id="rendered_style" | {}
-        h1 | Rendered HTML
+        h4 | Rendered HTML
         div id="rendered" |
   '''
 
