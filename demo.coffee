@@ -22,11 +22,19 @@ my_html_input = widget_collection.basic_tables.code
 demo_input = my_html_input
 convert = this.pipedent_convert
   
+num_user_changes = 0  
+  
 format_intro = ->
   e = $("#intro")
   e.css("font-weight", "bold")
   e.css("font-size", "30px")
   e.css("background-color", "lightgreen")
+  hide_if_user_changes = ->
+    if num_user_changes > 10
+      e.slideUp(3000)
+    else
+      setTimeout(hide_if_user_changes, 2000)
+  setTimeout(hide_if_user_changes, 2000)
   
 update_widgets = (input) ->
   output = convert_widget_package(input)
@@ -45,11 +53,14 @@ $(document).ready ->
   $("#input").text(demo_input)
   last_parsed_text = demo_input
   update_widgets(demo_input)
+  user_engaged = false
+  
   # This is a crude mechanism to continually parse
   # the input.
   parse = ->
     input = $("#input").val()
     if input != last_parsed_text
+      num_user_changes += 1
       update_widgets(input)
       last_parsed_text = input
     setTimeout parse, 200
