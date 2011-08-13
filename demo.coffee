@@ -17,27 +17,7 @@ demo_layout = \
         div id="rendered" |
   '''
 
-my_html_input = \
-  '''
-  HTML
-    <hr>
-    h6 | Simple tables
-    table border=1
-      tr
-        td class="red"
-          NW
-        td
-          NE
-      tr
-        td
-          SW
-        td style="background: lightblue"
-          SE
-  CSS
-    .red {
-      background: red
-    }
-  '''
+my_html_input = widget_collection.basic_tables.code
 
 demo_input = my_html_input
 convert = this.pipedent_convert
