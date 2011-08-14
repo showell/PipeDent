@@ -1,8 +1,6 @@
 (function() {
-  var convert, demo_input, demo_layout, format_intro, my_html_input, num_user_changes, update_widgets;
-  demo_layout = '\ntable\n  tr valign="top"\n    td\n      p id="intro"\n        | Welcome to the demo.  As you edit the code below, it\n        | will convert automatically.        \n      h2 | Input\n      textarea id="input_code" rows=80 cols=80 |\n    td\n      h2 | Output HTML\n      pre id="output" |\n      style type="text/css" id="rendered_style" | {}\n      h4 | Rendered HTML\n      div id="rendered" |';
-  my_html_input = widget_collection.keyboard_cat.code;
-  demo_input = my_html_input;
+  var CannedWidgets, convert, demo_layout, format_intro, num_user_changes, set_code, update_widgets;
+  demo_layout = 'table\n  tr valign="top"\n    td\n      p id="intro"\n        | Welcome to the demo.  As you edit the code below, it\n        | will convert automatically.\n      ul id="canned_widgets" |        \n      h2 | Input\n      textarea id="input_code" rows=80 cols=80 |\n    td\n      h2 | Output HTML\n      pre id="output" |\n      style type="text/css" id="rendered_style" | {}\n      h4 | Rendered HTML\n      div id="rendered" |';
   convert = this.pipedent_convert;
   num_user_changes = 0;
   format_intro = function() {
@@ -21,6 +19,9 @@
     };
     return setTimeout(hide_if_user_changes, 2000);
   };
+  set_code = function(code) {
+    return $("#input_code").val(code);
+  };
   update_widgets = function(input) {
     var output;
     output = convert_widget_package(input);
@@ -28,15 +29,44 @@
     $("#rendered").html(output.HTML);
     return $("#rendered_style").html(output.CSS);
   };
+  CannedWidgets = function(collection) {
+    var a, elem, key, li, set_click, val, values, widget, _i, _len, _results;
+    elem = $("#canned_widgets");
+    values = (function() {
+      var _results;
+      _results = [];
+      for (key in collection) {
+        val = collection[key];
+        _results.push(val);
+      }
+      return _results;
+    })();
+    set_click = function(a, widget) {
+      return a.click(function() {
+        return set_code(widget.code);
+      });
+    };
+    _results = [];
+    for (_i = 0, _len = values.length; _i < _len; _i++) {
+      widget = values[_i];
+      li = $("<li>");
+      a = $(convert("a href='#' | " + widget.description));
+      li.html(a);
+      set_click(a, widget);
+      _results.push(elem.append(li));
+    }
+    return _results;
+  };
   $(document).ready(function() {
-    var last_parsed_text, parse, user_engaged;
-    $("#intro").css("font-weight", "bold");
+    var canned_widgets, demo_input, last_parsed_text, parse, user_engaged;
     $("#content").html(convert(demo_layout));
+    canned_widgets = CannedWidgets(widget_collection);
+    demo_input = widget_collection.keyboard_cat.code;
     format_intro();
     $("#input_code").tabby({
       tabString: "  "
     });
-    $("#input_code").text(demo_input);
+    set_code(demo_input);
     last_parsed_text = demo_input;
     update_widgets(demo_input);
     user_engaged = false;

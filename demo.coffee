@@ -1,12 +1,12 @@
 demo_layout = \
   '''
-
   table
     tr valign="top"
       td
         p id="intro"
           | Welcome to the demo.  As you edit the code below, it
-          | will convert automatically.        
+          | will convert automatically.
+        ul id="canned_widgets" |        
         h2 | Input
         textarea id="input_code" rows=80 cols=80 |
       td
@@ -17,9 +17,6 @@ demo_layout = \
         div id="rendered" |
   '''
 
-my_html_input = widget_collection.keyboard_cat.code
-
-demo_input = my_html_input
 convert = this.pipedent_convert
   
 num_user_changes = 0  
@@ -37,21 +34,39 @@ format_intro = ->
       setTimeout(hide_if_user_changes, 2000)
   setTimeout(hide_if_user_changes, 2000)
   
+set_code = (code) ->
+  $("#input_code").val code
+  
 update_widgets = (input) ->
   output = convert_widget_package(input)
   $("#output").text(output.HTML)
   $("#rendered").html(output.HTML)
   $("#rendered_style").html(output.CSS)
+
+CannedWidgets = (collection) ->
+  elem = $("#canned_widgets")
+  values = (val for key, val of collection)
+  set_click = (a, widget) ->
+    a.click ->
+      set_code widget.code
+      # update_widgets widget.code
+  for widget in values
+    li = $("<li>")
+    a = $ convert "a href='#' | #{widget.description}"
+    li.html a
+    set_click a, widget
+    elem.append(li)
+    
         
 $(document).ready ->
-  $("#intro").css("font-weight", "bold")
-  
   $("#content").html(convert demo_layout)
   
+  canned_widgets = CannedWidgets(widget_collection)
+  demo_input = widget_collection.keyboard_cat.code
   format_intro()
   
   $("#input_code").tabby {tabString: "  "};
-  $("#input_code").text(demo_input)
+  set_code demo_input
   last_parsed_text = demo_input
   update_widgets(demo_input)
   user_engaged = false
