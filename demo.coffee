@@ -45,11 +45,14 @@ update_widgets = (input) ->
   if output.COFFEE
     try
       js = CoffeeScript.compile output.COFFEE
-      console.log output.COFFEE
-      eval js
     catch e
       console.log e
       console.log "(problem with compiling CS)"
+    try
+      eval js
+    catch e
+      console.log e
+      console.log "problem in JS"
       
 CannedWidgets = (collection) ->
   elem = $("#canned_widgets")
@@ -70,7 +73,7 @@ $(document).ready ->
   $("#content").html(convert demo_layout)
   
   canned_widgets = CannedWidgets(widget_collection)
-  demo_input = widget_collection.basic_tables.code
+  demo_input = widget_collection.trig.code
   format_intro()
   
   $("#input_code").tabby {tabString: "  "};

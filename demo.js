@@ -31,11 +31,15 @@
     if (output.COFFEE) {
       try {
         js = CoffeeScript.compile(output.COFFEE);
-        console.log(output.COFFEE);
+      } catch (e) {
+        console.log(e);
+        console.log("(problem with compiling CS)");
+      }
+      try {
         return eval(js);
       } catch (e) {
         console.log(e);
-        return console.log("(problem with compiling CS)");
+        return console.log("problem in JS");
       }
     }
   };
@@ -71,7 +75,7 @@
     var canned_widgets, demo_input, last_parsed_text, parse, user_engaged;
     $("#content").html(convert(demo_layout));
     canned_widgets = CannedWidgets(widget_collection);
-    demo_input = widget_collection.basic_tables.code;
+    demo_input = widget_collection.trig.code;
     format_intro();
     $("#input_code").tabby({
       tabString: "  "
