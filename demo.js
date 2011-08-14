@@ -23,11 +23,21 @@
     return $("#input_code").val(code);
   };
   update_widgets = function(input) {
-    var output;
+    var js, output;
     output = convert_widget_package(input);
     $("#output").text(output.HTML);
     $("#rendered").html(output.HTML);
-    return $("#rendered_style").html(output.CSS);
+    $("#rendered_style").html(output.CSS);
+    if (output.COFFEE) {
+      try {
+        js = CoffeeScript.compile(output.COFFEE);
+        console.log(output.COFFEE);
+        return eval(js);
+      } catch (e) {
+        console.log(e);
+        return console.log("(problem with compiling CS)");
+      }
+    }
   };
   CannedWidgets = function(collection) {
     var a, elem, key, li, set_click, val, values, widget, _i, _len, _results;
@@ -61,7 +71,7 @@
     var canned_widgets, demo_input, last_parsed_text, parse, user_engaged;
     $("#content").html(convert(demo_layout));
     canned_widgets = CannedWidgets(widget_collection);
-    demo_input = widget_collection.keyboard_cat.code;
+    demo_input = widget_collection.basic_tables.code;
     format_intro();
     $("#input_code").tabby({
       tabString: "  "

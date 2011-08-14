@@ -4,23 +4,36 @@ this.widget_collection =
     code: \
       '''
       HTML
-        <hr>
-        h6 | Simple tables
-        table border=1
-          tr
-            td class="red"
-              Northwest
-            td
-              Northeast
-          tr
-            td
-              Southwest
-            td style="background: lightblue"
-              Southeast
+        div id="TableWidget"
+          <hr>
+          h6 | Simple tables
+          table border=1
+            tr
+              td class="NW"
+                Northwest
+              td class="NE"
+                Northeast
+            tr
+              td class="SW"
+                Southwest
+              td class="SE"
+                Southeast
       CSS
-        .red {
+        .NW {
           background: red
         }
+        .SE {
+          background: lightblue
+        }
+      COFFEE
+        Widget = (elem) ->
+          set_color = (elem, color) ->
+            elem.css("background", color)
+          NW: (color) -> set_color $(".NW"), color
+          NE: (color) -> set_color $(".NE"), color
+          SW: (color) -> set_color $(".SW"), color
+          SE: (color) -> set_color $(".SE"), color
+        this.widget = Widget $("#TableWidget")
       '''
       
   keyboard_cat:
