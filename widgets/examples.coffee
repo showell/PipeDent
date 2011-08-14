@@ -36,7 +36,7 @@ this.widget_collection =
         this.widget = Widget $("#TableWidget")
       '''
   
-  trig:
+  complex_numbers:
     description: "Complex Numbers"
     code: \
       '''
@@ -46,7 +46,7 @@ this.widget_collection =
         #ComplexNumbers {
           width: 300px;
           height: 300px;
-          border: 1px black solid
+          border: 3px blue solid
         }
       COFFEE
         Shape = (canvas, coords) ->

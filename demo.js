@@ -75,7 +75,7 @@
     var canned_widgets, demo_input, last_parsed_text, parse, user_engaged;
     $("#content").html(convert(demo_layout));
     canned_widgets = CannedWidgets(widget_collection);
-    demo_input = widget_collection.trig.code;
+    demo_input = widget_collection.basic_tables.code;
     format_intro();
     $("#input_code").tabby({
       tabString: "  "
