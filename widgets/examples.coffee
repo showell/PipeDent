@@ -52,8 +52,10 @@ this.widget_collection =
         Shape = (canvas, coords) ->
           cp = ComplexPlane(canvas)
           cp.draw_shape(coords)
+          rescale = (coord, scaling) ->
+            coord.times_real(scaling)
           reflect_origin = (coord) ->
-            coord.times Complex(-1, 0)
+            rescale coord, -1
           reflect_x = (coord) ->
             coord.conjugate()
           reflect_y = (coord) ->
@@ -70,6 +72,8 @@ this.widget_collection =
               self.transform reflect_y
             move: (x, y) ->
               self.transform (coord) -> coord.plus Complex(x,y)
+            rescale: (scaling) ->
+              self.transform (coord) -> rescale coord, scaling
             coords: -> coords
             rotate: (angle) ->
               radians = 2 * Math.PI * angle / 360
@@ -81,6 +85,7 @@ this.widget_collection =
           b: b
           conjugate: -> Complex(a, -b)
           times: (other) -> Complex(a * other.a - b * other.b, a * other.b + b * other.a)
+          times_real: (real) -> Complex(a * real, b * real)
           plus: (other) -> Complex(a + other.a, b + other.b)
           toString: -> "#{a} + #{b}i"
           magnitude: -> a*a + b*b
@@ -118,7 +123,7 @@ this.widget_collection =
               draw_axes()
         
         canvas = $("#ComplexNumbers").get()[0]
-        house = [Complex(10, 10), Complex(10, 40), Complex(25, 50), Complex(40, 40), Complex(40, 10)]
+        house = [Complex(10, 10), Complex(10, 40), Complex(25, 60), Complex(40, 40), Complex(40, 10)]
         this.shape = Shape(canvas, house)
         this.Complex = Complex
       '''
