@@ -49,11 +49,39 @@ this.widget_collection =
           border: 1px black solid
         }
       COFFEE
+        Shape = (canvas, coords) ->
+          cp = ComplexPlane(canvas)
+          cp.draw_shape(coords)
+          reflect_origin = (coord) ->
+            coord.times Complex(-1, 0)
+          reflect_x = (coord) ->
+            coord.conjugate()
+          reflect_y = (coord) ->
+            reflect_x reflect_origin(coord)
+          self =
+            transform: (f) ->
+              coords = coords.map (coord) -> f(coord)
+              cp.draw_shape(coords)
+            reflect_origin: ->
+              self.transform reflect_origin
+            reflect_x: -> 
+              self.transform reflect_x
+            reflect_y: -> 
+              self.transform reflect_y
+            move: (x, y) ->
+              self.transform (coord) -> coord.plus Complex(x,y)
+            coords: -> coords
+            rotate: (angle) ->
+              radians = 2 * Math.PI * angle / 360
+              other = Complex Math.cos(radians), Math.sin(radians)
+              self.transform (coord) -> coord.times(other) 
+      
         Complex = (a, b) ->
           a: a
           b: b
           conjugate: -> Complex(a, -b)
           times: (other) -> Complex(a * other.a - b * other.b, a * other.b + b * other.a)
+          plus: (other) -> Complex(a + other.a, b + other.b)
           toString: -> "#{a} + #{b}i"
           magnitude: -> a*a + b*b
 
@@ -67,12 +95,17 @@ this.widget_collection =
             ctx.moveTo(150, 0)
             ctx.lineTo(150, 300)
             ctx.stroke()
+          x = (c) ->
+            Math.floor(c.a) + 150
+          y = (c) ->
+            150 - Math.floor(c.b)
           move = (c) ->
-            ctx.moveTo(c.a+150, 150-c.b)
+            ctx.moveTo x(c), y(c)
           line = (c) ->
-            ctx.lineTo(c.a+150, 150-c.b)
+            ctx.lineTo x(c), y(c)
           self =
             draw_shape: (shape) ->
+              self.reset()
               ctx.strokeStyle = "red"
               ctx.beginPath()
               move(shape[shape.length-1])
@@ -83,13 +116,10 @@ this.widget_collection =
               canvas.width = canvas.width
               ctx.scale(1, 0.5)
               draw_axes()
-              
+        
         canvas = $("#ComplexNumbers").get()[0]
-        cp = ComplexPlane(canvas)
-        house = [Complex(10, 10), Complex(10, 40), Complex(40, 40), Complex(40, 10)]
-        cp.reset()
         house = [Complex(10, 10), Complex(10, 40), Complex(25, 50), Complex(40, 40), Complex(40, 10)]
-        cp.draw_shape(house)
+        this.shape = Shape(canvas, house)
         this.Complex = Complex
       '''
       
