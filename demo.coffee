@@ -2,14 +2,14 @@ demo_layout = \
   '''
   table
     tr valign="top"
-      td
+      td id="leftPanel"
         p id="intro"
           | Welcome to the demo.  As you edit the code below, it
           | will convert automatically.
         ul id="canned_widgets" |        
-        h2 | Input
+        h2 id="leftPanel" | Input
         textarea id="input_code" rows=80 cols=80 |
-      td
+      td id="rightPanel"
         h2 | Output HTML
         pre id="output" |
         style type="text/css" id="rendered_style" | {}
@@ -78,6 +78,8 @@ CannedWidgets = (collection) ->
         
 $(document).ready ->
   $("#content").html(convert demo_layout)
+  $("#leftPanel").css("padding", "10px")
+  $("#rightPanel").css("padding", "10px")
   
   canned_widgets = CannedWidgets(widget_collection)
   demo_input = widget_collection.pipedent.code

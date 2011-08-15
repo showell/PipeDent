@@ -1,6 +1,6 @@
 (function() {
   var CannedWidgets, convert, demo_layout, format_intro, num_user_changes, set_code, update_widgets;
-  demo_layout = 'table\n  tr valign="top"\n    td\n      p id="intro"\n        | Welcome to the demo.  As you edit the code below, it\n        | will convert automatically.\n      ul id="canned_widgets" |        \n      h2 | Input\n      textarea id="input_code" rows=80 cols=80 |\n    td\n      h2 | Output HTML\n      pre id="output" |\n      style type="text/css" id="rendered_style" | {}\n      h4 | Rendered HTML\n      div id="rendered" |';
+  demo_layout = 'table\n  tr valign="top"\n    td id="leftPanel"\n      p id="intro"\n        | Welcome to the demo.  As you edit the code below, it\n        | will convert automatically.\n      ul id="canned_widgets" |        \n      h2 id="leftPanel" | Input\n      textarea id="input_code" rows=80 cols=80 |\n    td id="rightPanel"\n      h2 | Output HTML\n      pre id="output" |\n      style type="text/css" id="rendered_style" | {}\n      h4 | Rendered HTML\n      div id="rendered" |';
   convert = this.pipedent_convert;
   num_user_changes = 0;
   format_intro = function() {
@@ -86,6 +86,8 @@
   $(document).ready(function() {
     var canned_widgets, demo_input, last_parsed_text, parse, user_engaged;
     $("#content").html(convert(demo_layout));
+    $("#leftPanel").css("padding", "10px");
+    $("#rightPanel").css("padding", "10px");
     canned_widgets = CannedWidgets(widget_collection);
     demo_input = widget_collection.pipedent.code;
     format_intro();
