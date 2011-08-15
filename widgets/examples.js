@@ -1,5 +1,9 @@
 (function() {
   this.widget_collection = {
+    pipedent: {
+      description: "PipeDent",
+      code: 'HTML\n  <hr>\n  table\n    tr\n      td\n        h2 | About Pipedent\n        h4 | small subset of HAML/Jade\n        h4 | use it as a preprocessor\n        h4 | just requires one file to run\n        h4 | source code is annotated\n      td\n        h2 | Syntax\n        h4 | Use indentation for blocks\n        h4 | Use "|" to separate markup from content\n        h4 | Use "|" to auto-close single-line tags\n        h4 | Inline HTML passes through fine.\n  <hr>\n    a href="https://github.com/showell/PipeDent/blob/master/pipedent.coffee" | Github\nCSS\n  h4 {\n    font-weight: normal;\n  }\n  td {\n    padding: 10px;\n  }'
+    },
     basic_tables: {
       description: "Basic Tables",
       code: 'HTML\n  div id="TableWidget"\n    <hr>\n    h6 | Simple tables\n    table border=1\n      tr\n        td class="NW"\n          Northwest\n        td class="NE"\n          Northeast\n      tr\n        td class="SW"\n          Southwest\n        td class="SE"\n          Southeast\nCSS\n  .NW {\n    background: red\n  }\n  .SE {\n    background: lightblue\n  }\nCOFFEE\n  Widget = (elem) ->\n    set_color = (elem, color) ->\n      elem.css("background", color)\n    NW: (color) -> set_color $(".NW"), color\n    NE: (color) -> set_color $(".NE"), color\n    SW: (color) -> set_color $(".SW"), color\n    SE: (color) -> set_color $(".SE"), color\n  this.widget = Widget $("#TableWidget")'

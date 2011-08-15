@@ -73,7 +73,7 @@ $(document).ready ->
   $("#content").html(convert demo_layout)
   
   canned_widgets = CannedWidgets(widget_collection)
-  demo_input = widget_collection.basic_tables.code
+  demo_input = widget_collection.pipedent.code
   format_intro()
   
   $("#input_code").tabby {tabString: "  "};
