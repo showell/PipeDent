@@ -1,3 +1,5 @@
+# <hr>
+# Set up the overall structure using PipeDent itself.
 demo_layout = \
   '''
   table
@@ -20,9 +22,10 @@ demo_layout = \
   '''
 
 convert = this.pipedent_convert
-  
 num_user_changes = 0  
 
+# <hr>
+# Allow toggling of HTML output.
 set_up_output_toggle = ->
   elem = $("#outputToggle")  
   visible = true
@@ -36,6 +39,9 @@ set_up_output_toggle = ->
       visible = true
       elem.text("Hide")
 
+# <hr>
+# Format the introductory text that says to start editing,
+# and remove it when they have done a few edits.
 format_intro = ->
   e = $("#intro")
   e.css("font-weight", "bold")
@@ -49,6 +55,8 @@ format_intro = ->
       setTimeout(hide_if_user_changes, 2000)
   setTimeout(hide_if_user_changes, 2000)
   
+# <hr>
+# When new code is loaded, adjust the columns to fit the new text.
 set_code = (code) ->
   max_line = 0
   for line in code.split("\n")
@@ -58,6 +66,8 @@ set_code = (code) ->
   $("#input_code").attr("cols", max_line * 0.9)
   $("#input_code").val code
   
+# <hr>
+# Any time code changes, update the world.
 update_widgets = (input) ->
   output = convert_widget_package(input)
   $("#output").text(output.HTML)
@@ -74,7 +84,10 @@ update_widgets = (input) ->
     catch e
       console.log e
       console.log "problem in JS"
-      
+
+# <hr>      
+# CannedWidgets are pre-built widgets that users can select to
+# load up.
 CannedWidgets = (collection) ->
   elem = $("#canned_widgets")
   values = (val for key, val of collection)
@@ -89,7 +102,8 @@ CannedWidgets = (collection) ->
     set_click a, widget
     elem.append(li)
     
-        
+# <hr>
+# Get everything up and running.       
 $(document).ready ->
   $("#content").html(convert demo_layout)
   $("#leftPanel").css("padding", "10px")

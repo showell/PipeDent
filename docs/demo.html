@@ -1,0 +1,119 @@
+<!DOCTYPE html>  <html> <head>   <title>demo.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="demo.html">                 demo.coffee               </a>                                           <a class="source" href="pipedent.html">                 pipedent.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               demo.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <hr>
+
+<p>Set up the overall structure using PipeDent itself.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">demo_layout = </span><span class="o">\</span>
+  <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">  table</span>
+<span class="s1">    tr valign=&quot;top&quot;</span>
+<span class="s1">      td id=&quot;leftPanel&quot;</span>
+<span class="s1">        p id=&quot;intro&quot;</span>
+<span class="s1">          | Welcome to the demo.  As you edit the code below, it</span>
+<span class="s1">          | will convert automatically.</span>
+<span class="s1">        ul id=&quot;canned_widgets&quot; |        </span>
+<span class="s1">        h2 id=&quot;leftPanel&quot; | Input</span>
+<span class="s1">        textarea id=&quot;input_code&quot; rows=80 cols=80 |</span>
+<span class="s1">      td id=&quot;rightPanel&quot;</span>
+<span class="s1">        h4 | Output HTML</span>
+<span class="s1">        a href=&quot;#&quot; id=&quot;outputToggle&quot; | Hide</span>
+<span class="s1">        pre id=&quot;output&quot; |</span>
+<span class="s1">        &lt;hr&gt;</span>
+<span class="s1">        style type=&quot;text/css&quot; id=&quot;rendered_style&quot; | {}</span>
+<span class="s1">        h4 | Rendered HTML</span>
+<span class="s1">        div id=&quot;rendered&quot; |</span>
+<span class="s1">  &#39;&#39;&#39;</span>
+
+<span class="nv">convert = </span><span class="k">this</span><span class="p">.</span><span class="nx">pipedent_convert</span>
+<span class="nv">num_user_changes = </span><span class="mi">0</span>  </pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <hr>
+
+<p>Allow toggling of HTML output.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">set_up_output_toggle = </span><span class="o">-&gt;</span>
+  <span class="nv">elem = </span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#outputToggle&quot;</span><span class="p">)</span>  
+  <span class="nv">visible = </span><span class="kc">true</span>
+  <span class="nx">elem</span><span class="p">.</span><span class="nx">click</span> <span class="o">-&gt;</span>
+    <span class="k">if</span> <span class="nx">visible</span>
+      <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#output&quot;</span><span class="p">).</span><span class="nx">hide</span><span class="p">()</span>
+      <span class="nv">visible = </span><span class="kc">false</span>
+      <span class="nx">elem</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">&quot;Show&quot;</span><span class="p">)</span>
+    <span class="k">else</span>
+      <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#output&quot;</span><span class="p">).</span><span class="nx">show</span><span class="p">()</span>
+      <span class="nv">visible = </span><span class="kc">true</span>
+      <span class="nx">elem</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">&quot;Hide&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <hr>
+
+<p>Format the introductory text that says to start editing,
+and remove it when they have done a few edits.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">format_intro = </span><span class="o">-&gt;</span>
+  <span class="nv">e = </span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#intro&quot;</span><span class="p">)</span>
+  <span class="nx">e</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s2">&quot;font-weight&quot;</span><span class="p">,</span> <span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+  <span class="nx">e</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s2">&quot;font-size&quot;</span><span class="p">,</span> <span class="s2">&quot;20px&quot;</span><span class="p">)</span>
+  <span class="nx">e</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s2">&quot;background-color&quot;</span><span class="p">,</span> <span class="s2">&quot;lightgreen&quot;</span><span class="p">)</span>
+  <span class="nx">e</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s2">&quot;width&quot;</span><span class="p">,</span> <span class="s2">&quot;450px&quot;</span><span class="p">)</span>
+  <span class="nv">hide_if_user_changes = </span><span class="o">-&gt;</span>
+    <span class="k">if</span> <span class="nx">num_user_changes</span> <span class="o">&gt;</span> <span class="mi">5</span>
+      <span class="nx">e</span><span class="p">.</span><span class="nx">fadeOut</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="k">else</span>
+      <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">hide_if_user_changes</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
+  <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">hide_if_user_changes</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <hr>
+
+<p>When new code is loaded, adjust the columns to fit the new text.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">set_code = </span><span class="nf">(code) -&gt;</span>
+  <span class="nv">max_line = </span><span class="mi">0</span>
+  <span class="k">for</span> <span class="nx">line</span> <span class="k">in</span> <span class="nx">code</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot;\n&quot;</span><span class="p">)</span>
+    <span class="nv">len = </span><span class="nx">line</span><span class="p">.</span><span class="nx">length</span>
+    <span class="nv">max_line = </span><span class="nx">len</span> <span class="k">if</span> <span class="nx">len</span> <span class="o">&gt;</span> <span class="nx">max_line</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>The cols attribute needs rescaling for some reason.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#input_code&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;cols&quot;</span><span class="p">,</span> <span class="nx">max_line</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#input_code&quot;</span><span class="p">).</span><span class="nx">val</span> <span class="nx">code</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <hr>
+
+<p>Any time code changes, update the world.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">update_widgets = </span><span class="nf">(input) -&gt;</span>
+  <span class="nv">output = </span><span class="nx">convert_widget_package</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#output&quot;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">output</span><span class="p">.</span><span class="nx">HTML</span><span class="p">)</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#rendered&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">output</span><span class="p">.</span><span class="nx">HTML</span><span class="p">)</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#rendered_style&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">output</span><span class="p">.</span><span class="nx">CSS</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">output</span><span class="p">.</span><span class="nx">COFFEE</span>
+    <span class="k">try</span>
+      <span class="nv">js = </span><span class="nx">CoffeeScript</span><span class="p">.</span><span class="nx">compile</span> <span class="nx">output</span><span class="p">.</span><span class="nx">COFFEE</span>
+    <span class="k">catch</span> <span class="nx">e</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">e</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s2">&quot;(problem with compiling CS)&quot;</span>
+    <span class="k">try</span>
+      <span class="nb">eval</span> <span class="nx">js</span>
+    <span class="k">catch</span> <span class="nx">e</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">e</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s2">&quot;problem in JS&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <hr>      
+
+<p>CannedWidgets are pre-built widgets that users can select to
+load up.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">CannedWidgets = </span><span class="nf">(collection) -&gt;</span>
+  <span class="nv">elem = </span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#canned_widgets&quot;</span><span class="p">)</span>
+  <span class="nv">values = </span><span class="p">(</span><span class="nx">val</span> <span class="k">for</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">val</span> <span class="k">of</span> <span class="nx">collection</span><span class="p">)</span>
+  <span class="nv">set_click = </span><span class="nf">(a, widget) -&gt;</span>
+    <span class="nx">a</span><span class="p">.</span><span class="nx">click</span> <span class="o">-&gt;</span>
+      <span class="nx">set_code</span> <span class="nx">widget</span><span class="p">.</span><span class="nx">code</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>update_widgets widget.code</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">for</span> <span class="nx">widget</span> <span class="k">in</span> <span class="nx">values</span>
+    <span class="nv">li = </span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;&lt;li&gt;&quot;</span><span class="p">)</span>
+    <span class="nv">a = </span><span class="nx">$</span> <span class="nx">convert</span> <span class="s2">&quot;a href=&#39;#&#39; | #{widget.description}&quot;</span>
+    <span class="nx">li</span><span class="p">.</span><span class="nx">html</span> <span class="nx">a</span>
+    <span class="nx">set_click</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">widget</span>
+    <span class="nx">elem</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">li</span><span class="p">)</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <hr>
+
+<p>Get everything up and running.       </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span> <span class="o">-&gt;</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#content&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">convert</span> <span class="nx">demo_layout</span><span class="p">)</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#leftPanel&quot;</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">&quot;padding&quot;</span><span class="p">,</span> <span class="s2">&quot;10px&quot;</span><span class="p">)</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#rightPanel&quot;</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">&quot;padding&quot;</span><span class="p">,</span> <span class="s2">&quot;10px&quot;</span><span class="p">)</span>
+  
+  <span class="nv">canned_widgets = </span><span class="nx">CannedWidgets</span><span class="p">(</span><span class="nx">widget_collection</span><span class="p">)</span>
+  <span class="nv">demo_input = </span><span class="nx">widget_collection</span><span class="p">.</span><span class="nx">pipedent</span><span class="p">.</span><span class="nx">code</span>
+  <span class="nx">format_intro</span><span class="p">()</span>
+  <span class="nx">set_up_output_toggle</span><span class="p">()</span>
+  
+  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#input_code&quot;</span><span class="p">).</span><span class="nx">tabby</span> <span class="p">{</span><span class="nv">tabString: </span><span class="s2">&quot;  &quot;</span><span class="p">};</span>
+  <span class="nx">set_code</span> <span class="nx">demo_input</span>
+  <span class="nv">last_parsed_text = </span><span class="nx">demo_input</span>
+  <span class="nx">update_widgets</span><span class="p">(</span><span class="nx">demo_input</span><span class="p">)</span>
+  <span class="nv">user_engaged = </span><span class="kc">false</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>This is a crude mechanism to continually parse
+the input.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">parse = </span><span class="o">-&gt;</span>
+    <span class="nv">input = </span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#input_code&quot;</span><span class="p">).</span><span class="nx">val</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nx">input</span> <span class="o">!=</span> <span class="nx">last_parsed_text</span>
+      <span class="nx">num_user_changes</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="nx">update_widgets</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span>
+      <span class="nv">last_parsed_text = </span><span class="nx">input</span>
+    <span class="nx">setTimeout</span> <span class="nx">parse</span><span class="p">,</span> <span class="mi">200</span>
+  <span class="nx">setTimeout</span> <span class="nx">parse</span><span class="p">,</span> <span class="mi">200</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
