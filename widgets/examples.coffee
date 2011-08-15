@@ -80,6 +80,10 @@ this.widget_collection =
                 button id="reflect_origin" | Reflect across origin
                 button id="expand" | Expand
                 button id="compress" | Compress
+                button id="left" | Left
+                button id="right" | Right
+                button id="up" | Up
+                button id="down" | Down
       CSS
         #ComplexNumbers {
           width: 300px;
@@ -96,6 +100,10 @@ this.widget_collection =
           div.find("#reflect_origin").click -> shape.reflect_origin()
           div.find("#expand").click -> shape.rescale(1.2)
           div.find("#compress").click -> shape.rescale(0.8)
+          div.find("#left").click -> shape.move_horiz(-5)
+          div.find("#right").click -> shape.move_horiz(5)
+          div.find("#up").click -> shape.move_vert(5)
+          div.find("#down").click -> shape.move_vert(-5)
             
         Shape = (canvas, coords) ->
           cp = ComplexPlane(canvas)
@@ -108,6 +116,13 @@ this.widget_collection =
             coord.conjugate()
           reflect_y = (coord) ->
             reflect_x reflect_origin(coord)
+          move = (coord) -> 
+            coord.plus Complex(x,y)
+          move_horiz = (coord, dx) ->
+            coord.plus Complex(dx, 0)
+          move_vert = (coord, dy) ->
+            coord.plus Complex(0, dy)
+            
           self =
             transform: (f) ->
               coords = coords.map (coord) -> f(coord)
@@ -119,7 +134,11 @@ this.widget_collection =
             reflect_y: -> 
               self.transform reflect_y
             move: (x, y) ->
-              self.transform (coord) -> coord.plus Complex(x,y)
+              self.transform (coord) -> move(coord, x, y)
+            move_horiz: (dx) ->
+              self.transform (coord) -> move_horiz(coord, dx)
+            move_vert: (dy) ->
+              self.transform (coord) -> move_vert(coord, dy)
             rescale: (scaling) ->
               self.transform (coord) -> rescale coord, scaling
             coords: -> coords
