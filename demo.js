@@ -1,8 +1,24 @@
 (function() {
-  var CannedWidgets, convert, demo_layout, format_intro, num_user_changes, set_code, update_widgets;
-  demo_layout = 'table\n  tr valign="top"\n    td id="leftPanel"\n      p id="intro"\n        | Welcome to the demo.  As you edit the code below, it\n        | will convert automatically.\n      ul id="canned_widgets" |        \n      h2 id="leftPanel" | Input\n      textarea id="input_code" rows=80 cols=80 |\n    td id="rightPanel"\n      h2 | Output HTML\n      pre id="output" |\n      style type="text/css" id="rendered_style" | {}\n      h4 | Rendered HTML\n      div id="rendered" |';
+  var CannedWidgets, convert, demo_layout, format_intro, num_user_changes, set_code, set_up_output_toggle, update_widgets;
+  demo_layout = 'table\n  tr valign="top"\n    td id="leftPanel"\n      p id="intro"\n        | Welcome to the demo.  As you edit the code below, it\n        | will convert automatically.\n      ul id="canned_widgets" |        \n      h2 id="leftPanel" | Input\n      textarea id="input_code" rows=80 cols=80 |\n    td id="rightPanel"\n      h4 | Output HTML\n      a href="#" id="outputToggle" | Hide\n      pre id="output" |\n      <hr>\n      style type="text/css" id="rendered_style" | {}\n      h4 | Rendered HTML\n      div id="rendered" |';
   convert = this.pipedent_convert;
   num_user_changes = 0;
+  set_up_output_toggle = function() {
+    var elem, visible;
+    elem = $("#outputToggle");
+    visible = true;
+    return elem.click(function() {
+      if (visible) {
+        $("#output").hide();
+        visible = false;
+        return elem.text("Show");
+      } else {
+        $("#output").show();
+        visible = true;
+        return elem.text("Hide");
+      }
+    });
+  };
   format_intro = function() {
     var e, hide_if_user_changes;
     e = $("#intro");
@@ -91,6 +107,7 @@
     canned_widgets = CannedWidgets(widget_collection);
     demo_input = widget_collection.pipedent.code;
     format_intro();
+    set_up_output_toggle();
     $("#input_code").tabby({
       tabString: "  "
     });

@@ -10,8 +10,10 @@ demo_layout = \
         h2 id="leftPanel" | Input
         textarea id="input_code" rows=80 cols=80 |
       td id="rightPanel"
-        h2 | Output HTML
+        h4 | Output HTML
+        a href="#" id="outputToggle" | Hide
         pre id="output" |
+        <hr>
         style type="text/css" id="rendered_style" | {}
         h4 | Rendered HTML
         div id="rendered" |
@@ -20,7 +22,20 @@ demo_layout = \
 convert = this.pipedent_convert
   
 num_user_changes = 0  
-  
+
+set_up_output_toggle = ->
+  elem = $("#outputToggle")  
+  visible = true
+  elem.click ->
+    if visible
+      $("#output").hide()
+      visible = false
+      elem.text("Show")
+    else
+      $("#output").show()
+      visible = true
+      elem.text("Hide")
+
 format_intro = ->
   e = $("#intro")
   e.css("font-weight", "bold")
@@ -84,6 +99,7 @@ $(document).ready ->
   canned_widgets = CannedWidgets(widget_collection)
   demo_input = widget_collection.pipedent.code
   format_intro()
+  set_up_output_toggle()
   
   $("#input_code").tabby {tabString: "  "};
   set_code demo_input
