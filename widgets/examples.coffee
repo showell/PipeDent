@@ -91,6 +91,10 @@ this.widget_collection =
           border: 3px blue solid
         }
         
+        button {
+          display: block
+        }
+        
       COFFEE
         ButtonPanel = (shape, div) ->
           div.find("#rotate_plus10").click -> shape.rotate(10)
