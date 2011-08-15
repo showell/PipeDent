@@ -68,18 +68,40 @@ this.widget_collection =
       '''
   
   complex_numbers:
-    description: "Complex Numbers"
+    description: "Basic Graphics"
     code: \
       '''
       HTML
-        canvas id="ComplexNumbers" |
+        table
+          tr valign="top"
+            td
+              canvas id="ComplexNumbers" |
+            td
+              div id="ButtonPanel"
+                button id="rotate_plus10" | Rotate 10 counterclockwise
+                button id="rotate_minus10" | Rotate 10 clockwise
+                button id="reflect_x" | Reflect across x-axis
+                button id="reflect_y" | Reflect across y-axis
+                button id="reflect_origin" | Reflect across origin
+                button id="expand" | Expand
+                button id="compress" | Compress
       CSS
         #ComplexNumbers {
           width: 300px;
           height: 300px;
           border: 3px blue solid
         }
+        
       COFFEE
+        ButtonPanel = (shape, div) ->
+          div.find("#rotate_plus10").click -> shape.rotate(10)
+          div.find("#rotate_minus10").click -> shape.rotate(-10)
+          div.find("#reflect_x").click -> shape.reflect_x()
+          div.find("#reflect_y").click -> shape.reflect_y()
+          div.find("#reflect_origin").click -> shape.reflect_origin()
+          div.find("#expand").click -> shape.rescale(1.2)
+          div.find("#compress").click -> shape.rescale(0.8)
+            
         Shape = (canvas, coords) ->
           cp = ComplexPlane(canvas)
           cp.draw_shape(coords)
@@ -156,6 +178,7 @@ this.widget_collection =
         canvas = $("#ComplexNumbers").get()[0]
         house = [Complex(10, 10), Complex(10, 40), Complex(25, 60), Complex(40, 40), Complex(40, 10)]
         this.shape = Shape(canvas, house)
+        this.button_panel = ButtonPanel(shape, $("#ButtonPanel"))
         this.Complex = Complex
       '''
       
