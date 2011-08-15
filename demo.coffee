@@ -35,6 +35,13 @@ format_intro = ->
   setTimeout(hide_if_user_changes, 2000)
   
 set_code = (code) ->
+  max_line = 0
+  for line in code.split("\n")
+    len = line.length
+    max_line = len if len > max_line
+  console.log max_line
+  # The cols attribute needs rescaling for some reason.
+  $("#input_code").attr("cols", max_line * 0.9)
   $("#input_code").val code
   
 update_widgets = (input) ->

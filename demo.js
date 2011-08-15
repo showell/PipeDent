@@ -20,6 +20,18 @@
     return setTimeout(hide_if_user_changes, 2000);
   };
   set_code = function(code) {
+    var len, line, max_line, _i, _len, _ref;
+    max_line = 0;
+    _ref = code.split("\n");
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      line = _ref[_i];
+      len = line.length;
+      if (len > max_line) {
+        max_line = len;
+      }
+    }
+    console.log(max_line);
+    $("#input_code").attr("cols", max_line * 0.9);
     return $("#input_code").val(code);
   };
   update_widgets = function(input) {
