@@ -2,7 +2,7 @@
   this.widget_collection = {
     pipedent: {
       description: "PipeDent",
-      code: 'HTML\n  <hr>\n  table\n    tr\n      td\n        h2 | About Pipedent\n        h4 | small subset of HAML/Jade\n        h4 | use it as a preprocessor\n        h4 | just requires one file to run\n        h4 | source code is annotated\n      td\n        h2 | Syntax\n        h4 | Use indentation for blocks\n        h4 | Use "|" to separate markup from content\n        h4 | Use "|" to auto-close single-line tags\n        h4 | Inline HTML passes through fine.\n  <hr>\n    a href="https://github.com/showell/PipeDent/blob/master/pipedent.coffee" | Github\nCSS\n  h4 {\n    font-weight: normal;\n  }\n  td {\n    padding: 10px;\n  }'
+      code: 'HTML\n  <hr>\n    h2 | About Pipedent\n    ul\n      li | small subset/dialect of HAML/Jade\n      li | use it as a preprocessor\n      li | just requires one file to run\n      li | source code is annotated\n    h2 | Syntax\n    ul\n      li | Use indentation for blocks\n      li | Use "|" to separate markup from content\n      li | Use "|" to auto-close single-line tags\n      li | Inline HTML passes through fine.\n  <hr>\n    a href="https://github.com/showell/PipeDent/blob/master/pipedent.coffee" | Github\nCSS\n  ul {\n    list-style-type: none\n  }'
     },
     basic_tables: {
       description: "Basic Tables",

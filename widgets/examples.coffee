@@ -5,28 +5,23 @@ this.widget_collection =
       '''
       HTML
         <hr>
-        table
-          tr
-            td
-              h2 | About Pipedent
-              h4 | small subset of HAML/Jade
-              h4 | use it as a preprocessor
-              h4 | just requires one file to run
-              h4 | source code is annotated
-            td
-              h2 | Syntax
-              h4 | Use indentation for blocks
-              h4 | Use "|" to separate markup from content
-              h4 | Use "|" to auto-close single-line tags
-              h4 | Inline HTML passes through fine.
+          h2 | About Pipedent
+          ul
+            li | small subset/dialect of HAML/Jade
+            li | use it as a preprocessor
+            li | just requires one file to run
+            li | source code is annotated
+          h2 | Syntax
+          ul
+            li | Use indentation for blocks
+            li | Use "|" to separate markup from content
+            li | Use "|" to auto-close single-line tags
+            li | Inline HTML passes through fine.
         <hr>
           a href="https://github.com/showell/PipeDent/blob/master/pipedent.coffee" | Github
       CSS
-        h4 {
-          font-weight: normal;
-        }
-        td {
-          padding: 10px;
+        ul {
+          list-style-type: none
         }
       '''
   
