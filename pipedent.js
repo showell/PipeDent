@@ -25,9 +25,6 @@
       at: function(offset) {
         return list[index + offset];
       },
-      to_array: function() {
-        return list.slice(first, last);
-      },
       shift_slice: function(how_many) {
         var view;
         view = ArrayView(list, index, index + how_many);
@@ -55,7 +52,7 @@
         return line === '';
       });
     },
-    get_indented_block: function(len_prefix, indented_lines) {
+    number_of_lines_in_indented_block: function(len_prefix, indented_lines) {
       var i, line, new_prefix, _ref;
       i = 0;
       while (i < indented_lines.len()) {
@@ -126,7 +123,7 @@
       if (line === '') {
         return line_method(prefix, line);
       } else {
-        block_size = IndentationHelper.get_indented_block(prefix.length, indented_lines);
+        block_size = IndentationHelper.number_of_lines_in_indented_block(prefix.length, indented_lines);
         if (block_size === 0) {
           return line_method(prefix, line);
         } else {
@@ -213,7 +210,7 @@
       while (indented_lines.len() > 0) {
         _ref = indented_lines.shift(), prefix = _ref[0], line = _ref[1];
         key = line;
-        block_size = IndentationHelper.get_indented_block(prefix.length, indented_lines);
+        block_size = IndentationHelper.number_of_lines_in_indented_block(prefix.length, indented_lines);
         block = indented_lines.shift_slice(block_size);
         buffer = output();
         if (key === 'HTML') {
