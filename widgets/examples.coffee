@@ -24,7 +24,46 @@ this.widget_collection =
           list-style-type: none
         }
       '''
-  
+  shapes:
+    description: "Shapes"
+    code: \
+      '''
+      HTML
+        a href="http://css-tricks.com/examples/ShapesOfCSS/" | Original Site
+        div id="oval" |
+        div id="star-six" |
+        
+      CSS
+        
+        #oval {
+        	width: 200px;
+        	height: 100px;
+        	background: red;
+        	-moz-border-radius: 100px / 50px;
+        	-webkit-border-radius: 100px / 50px;
+        	border-radius: 100px / 50px;
+        }
+        #star-six {
+        	width: 0;
+        	height: 0;
+        	border-left: 50px solid transparent;
+        	border-right: 50px solid transparent;
+        	border-bottom: 100px solid red;
+        	position: relative;
+        }
+        #star-six:after {
+        	width: 0;
+        	height: 0;
+        	border-left: 50px solid transparent;
+        	border-right: 50px solid transparent;
+        	border-top: 100px solid red;
+        	position: absolute;
+        	content: "";
+        	top: 30px;
+        	left: -50px;
+        }
+      '''
+
   basic_tables:
     description: "Basic Tables"
     code: \

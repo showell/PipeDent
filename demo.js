@@ -46,7 +46,6 @@
         max_line = len;
       }
     }
-    console.log(max_line);
     $("#input_code").attr("cols", max_line * 0.9);
     return $("#input_code").val(code);
   };
