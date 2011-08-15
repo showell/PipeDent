@@ -94,6 +94,7 @@ this.widget_collection =
         Widget = (elem) ->
           set_color = (elem, color) ->
             elem.css("background", color)
+            return
           NW: (color) -> set_color $(".NW"), color
           NE: (color) -> set_color $(".NE"), color
           SW: (color) -> set_color $(".SW"), color
